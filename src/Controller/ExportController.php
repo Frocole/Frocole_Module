@@ -19,26 +19,30 @@ class ExportController extends ControllerBase
         // See https://www.drupal.org/node/2181523
 
         $conn = Database::getConnection('default', 'frocole');
-        $query = $conn->select('feedbackitems', 'f')
+
+        $csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+
+        // Get Fields.
+        $fields = $conn
+            ->query("DESCRIBE feedbackitems")
+            ->fetchAll();
+ 
+        $fieldnames = array();
+        foreach ($fields as $field) {
+            array_push($fieldnames, $field->Field);
+        }
+
+        fputcsv($csv, $fieldnames);
+
+        // Get Data to Export.
+        $query = $conn
+            ->select('feedbackitems', 'f')
             ->condition('GroupID', $id)
             ->fields('f');
         $data = $query
             ->execute()
             ->fetchAllAssoc('FeedBackItemID', \PDO::FETCH_ASSOC);
-       
-        $csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
-
-        fputcsv(
-            $csv, array(
-            t('FeedBackItem ID'), 
-            t('Timestamp'), 
-            t('Group ID'), 
-            t('FeedbackSuplier ID'), 
-            t('Subject'), 
-            t('Parameter'), 
-            t('Score'))
-        );
-
+            
         foreach ($data as $record) {
             fputcsv(
                 $csv, array(    
@@ -52,13 +56,13 @@ class ExportController extends ControllerBase
             );
         }
 
-        // output the stream as a string.
+        // Output the stream as a raw html PRE string.
         rewind($csv);
         $build = [
             '#markup' => "<pre>".stream_get_contents($csv)."</pre>",
         ];
 
-        //close the stream
+        // Close the stream
         fclose($csv);
 
         return $build;
