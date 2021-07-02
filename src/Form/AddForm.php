@@ -17,7 +17,7 @@ class AddForm extends FormBase
      */
     public function getFormId()
     {
-        return 'mymodule_form';
+        return 'add_form';
     }
 
     /**
@@ -25,14 +25,14 @@ class AddForm extends FormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state)
     {
-      $url = Url::fromRoute('mymodule.display_data');
+        $url = Url::fromRoute('mymodule.display_data');
 
-      $form['index'] = [
+        $form['index'] = [
         '#type' => 'item',
         '#markup' => '<a href="'.$url->toString().'">View Courses</a>',
-      ];
+        ];
 
-      $conn = Database::getConnection('default', 'frocole');
+        $conn = Database::getConnection('default', 'frocole');
         $data = array();
         if (isset($_GET['id'])) {
             $query = $conn->select('courses', 'm')
