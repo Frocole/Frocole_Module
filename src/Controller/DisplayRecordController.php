@@ -4,6 +4,8 @@ namespace Drupal\mymodule\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 
 /**
@@ -62,8 +64,10 @@ class DisplayRecordController extends ControllerBase
             // Do something with each $record
             $groupID = $record['GroupID'];
             $group = $record['GroupNickname'];
-          
-            $groups .= "<li>[".str_pad($groupID, 4, '0', STR_PAD_LEFT)."]&nbsp;".$group;
+            
+            $export_url = Url::fromRoute('mymodule.export_form', ['id' => $groupID], []);
+
+            $groups .= '<li>[<a href="'.$export_url->toString().'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
             $groups .= $this->FetchGroupUsers($conn, $groupID);
         }
         $groups = "<ul>$groups</ul>";

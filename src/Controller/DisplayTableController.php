@@ -14,21 +14,20 @@ use Drupal\Core\Url;
  */
 class DisplayTableController extends ControllerBase
 {
-
     public function index()
     {
         //create table header
         $header_table = array(
-        'CourseID' => t('Course ID'),
-        'CourseName' => t('Course Name'),
-        'IPF_RD_parameters' => t('Individual Performance'),
-        'GPF_RD_parameters' => t('Group Performance'),
-        'LeraarUserID' => t('leraar'),
-        'CourseActive' => t('active'),
+            'CourseID' => t('Course ID'),
+            'CourseName' => t('Course Name'),
+            'IPF_RD_parameters' => t('Individual Performance'),
+            'GPF_RD_parameters' => t('Group Performance'),
+            'LeraarUserID' => t('leraar'),
+            'CourseActive' => t('active'),
 
-        'view' => t('View'),
-        'delete' => t('Delete'),
-        'edit' => t('Edit'),
+            'view' => t('View'),
+            'delete' => t('Delete'),
+            'edit' => t('Edit'),
         );
 
 
@@ -49,16 +48,18 @@ class DisplayTableController extends ControllerBase
 
             //get data
             $rows[] = array(
-            'CourseID' => $data->CourseID,
-            'CourseName' => $data->CourseName,
-            'IPF_RD_parameters' => $data->IPF_RD_parameters,
-            'GPF_RD_parameters' => $data->GPF_RD_parameters,
-            'LeraarUserID' => $data->LeraarUserID,
-            'CourseActive' => $data->CourseActive,
+                'CourseID' => $data->CourseID,
+                'CourseName' => $data->CourseName,
+                'IPF_RD_parameters' => $data->IPF_RD_parameters,
+                'GPF_RD_parameters' => $data->GPF_RD_parameters,
+                'LeraarUserID' => $data->LeraarUserID,
+                'CourseActive' => $data->CourseActive,
 
-            'view' => $linkView,
-            'delete' => $linkDelete,
-            'edit' =>  $linkEdit,
+                // TODO Show list of groups as well here?
+
+                'view' => $linkView,
+                'delete' => $linkDelete,
+                'edit' =>  $linkEdit,
             );
 
         }
@@ -81,5 +82,4 @@ class DisplayTableController extends ControllerBase
         return $form;
 
     }
-
 }

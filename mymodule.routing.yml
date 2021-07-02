@@ -29,3 +29,12 @@ mymodule.add_form:
     _form: '\Drupal\mymodule\Form\AddForm'
   requirements:
     _permission: 'access content'
+
+mymodule.export_form:
+  path: '/admin/mymodule/{id}/export'
+  defaults:
+    _controller: '\Drupal\mymodule\Controller\ExportController::export'
+    _title: 'ExportPage'
+  requirements:
+    _access: 'TRUE'
+

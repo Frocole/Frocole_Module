@@ -62,7 +62,6 @@ class DeleteForm extends ConfirmFormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state, $id = null)
     {
-
         $this->id = $id;
         return parent::buildForm($form, $form_state);
     }
