@@ -38,7 +38,7 @@ class ExportController extends ControllerBase
         // See http://web.archive.org/web/20190915170056/http://obtao.com/blog/2013/12/export-data-to-a-csv-file-with-symfony/
         //      
         $response = new StreamedResponse(
-            function () use($id) {
+            function () use ($id) {
                 $conn = Database::getConnection('default', 'frocole');
 
                 // Reserve 5M memory for the in-memory file.
@@ -85,7 +85,7 @@ class ExportController extends ControllerBase
 
         // download or show as text.
         //
-        $download = TRUE;
+        $download = true;
         
         $response->headers->set('Content-Type', $download ? 'text/csv' : 'text/plain');
         $response->headers->set('Content-Disposition', ($download ? 'attachment' : 'inline') . '; filename=' . 'frocole_group_'.$id . '.csv');
