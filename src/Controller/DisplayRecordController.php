@@ -70,6 +70,10 @@ class DisplayRecordController extends ControllerBase
             $groups .= '<li>[<a href="'.$export_url->toString().'" title="Export feedback to CSV/Excel">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
             $groups .= $this->FetchGroupUsers($conn, $groupID);
         }
+
+        if (strlen($groups) === 0) {
+            $groups = "<li><i>No Groups</i>";
+        }
         $groups = "<ul>$groups</ul>";
     
         return [
