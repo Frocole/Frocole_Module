@@ -1,5 +1,5 @@
 name: 'Frocole Module'
-description: 'Frocole Managementm and Export Module'
+description: 'Frocole Management and Export Module'
 package: Custom
 type: module
 core: 8.x
