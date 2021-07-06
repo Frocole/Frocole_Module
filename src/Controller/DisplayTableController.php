@@ -68,7 +68,7 @@ class DisplayTableController extends ControllerBase
 
         $form['add'] = [
           '#type' => 'item',
-          '#markup' => '<a href="'.$url->toString().'">Add Course</a>',
+          '#markup' => '<a href="'.$url->toString().'">Add a new Course</a>',
         ];
         
         // render table
