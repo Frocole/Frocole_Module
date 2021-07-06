@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mymodule\Controller;
+namespace Drupal\frocole\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Database;
@@ -11,7 +11,7 @@ use Drupal\file\Entity\File;
 /**
  * Class DisplayRecordController
  *
- * @package Drupal\mymodule\Controller
+ * @package Drupal\frocole\Controller
  */
 class DisplayRecordController extends ControllerBase
 {
@@ -65,7 +65,7 @@ class DisplayRecordController extends ControllerBase
             $groupID = $record['GroupID'];
             $group = $record['GroupNickname'];
             
-            $export_url = Url::fromRoute('mymodule.export_form', ['id' => $groupID], []);
+            $export_url = Url::fromRoute('frocole.export_form', ['id' => $groupID], []);
 
             $groups .= '<li>[<a href="'.$export_url->toString().'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
             $groups .= $this->FetchGroupUsers($conn, $groupID);

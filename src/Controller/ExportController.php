@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mymodule\Controller;
+namespace Drupal\frocole\Controller;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Controller\ControllerBase;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * Class ExportController
  *
- * @package Drupal\mymodule\Controller
+ * @package Drupal\frocole\Controller
  */
 class ExportController extends ControllerBase
 {

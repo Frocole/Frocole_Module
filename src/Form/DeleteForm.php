@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mymodule\Form;
+namespace Drupal\frocole\Form;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
  * Class DeleteForm
  *
- * @package Drupal\mymodule\Form
+ * @package Drupal\frocole\Form
  */
 class DeleteForm extends ConfirmFormBase
 {
@@ -33,7 +33,7 @@ class DeleteForm extends ConfirmFormBase
 
     public function getCancelUrl()
     {
-        return new Url('mymodule.display_data');
+        return new Url('frocole.display_data');
     }
 
     public function getDescription()
@@ -84,6 +84,6 @@ class DeleteForm extends ConfirmFormBase
             ->condition('CourseID', $this->id)
             ->execute();
         \Drupal::messenger()->addStatus('Succesfully deleted.');
-        $form_state->setRedirect('mymodule.display_data');
+        $form_state->setRedirect('frocole.display_data');
     }
 }

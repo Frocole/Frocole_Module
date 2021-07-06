@@ -1,0 +1,40 @@
+frocole.display_data:
+  path: '/admin/frocole/index'
+  defaults:
+    _controller: '\Drupal\frocole\Controller\DisplayTableController::index'
+    _title: 'All Data'
+  requirements:
+    _permission: 'access content'
+
+frocole.show_data:
+  path: '/admin/frocole/{id}/show'
+  defaults:
+    _controller: '\Drupal\frocole\Controller\DisplayRecordController::show'
+    _title: 'Show Data'
+  requirements:
+    _permission: 'access content'
+
+frocole.delete_form:
+  path: '/admin/frocole/{id}/delete'
+  defaults:
+    _form: '\Drupal\frocole\Form\DeleteForm'
+    _title: 'DeleteForm'
+  requirements:
+    _access: 'TRUE'
+
+frocole.add_form:
+  path: '/admin/frocole/add'
+  defaults:
+    _title: 'Add/Edit Data'
+    _form: '\Drupal\frocole\Form\AddForm'
+  requirements:
+    _permission: 'access content'
+
+frocole.export_form:
+  path: '/admin/frocole/{id}/export'
+  defaults:
+    _controller: '\Drupal\frocole\Controller\ExportController::export'
+    _title: 'ExportPage'
+  requirements:
+    _access: 'TRUE'
+

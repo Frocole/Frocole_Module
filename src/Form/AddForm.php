@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mymodule\Form;
+namespace Drupal\frocole\Form;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
@@ -25,7 +25,7 @@ class AddForm extends FormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state)
     {
-        $url = Url::fromRoute('mymodule.display_data');
+        $url = Url::fromRoute('frocole.display_data');
 
         $form['index'] = [
         '#type' => 'item',
@@ -130,7 +130,7 @@ class AddForm extends FormBase
 
         // show message and redirect to list page
         \Drupal::messenger()->addStatus('Succesfully saved');
-        $url = new Url('mymodule.display_data');
+        $url = new Url('frocole.display_data');
         $response = new RedirectResponse($url->toString());
         $response->send();
     }

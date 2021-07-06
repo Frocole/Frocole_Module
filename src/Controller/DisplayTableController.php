@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mymodule\Controller;
+namespace Drupal\frocole\Controller;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Controller\ControllerBase;
@@ -10,7 +10,7 @@ use Drupal\Core\Url;
 /**
  * Class DisplayTableController
  *
- * @package Drupal\mymodule\Controller
+ * @package Drupal\frocole\Controller
  */
 class DisplayTableController extends ControllerBase
 {
@@ -38,9 +38,9 @@ class DisplayTableController extends ControllerBase
 
         $rows = array();
         foreach ($results as $data) {
-            $url_delete = Url::fromRoute('mymodule.delete_form', ['id' => $data->CourseID], []);
-            $url_edit = Url::fromRoute('mymodule.add_form', ['id' => $data->CourseID], []);
-            $url_view = Url::fromRoute('mymodule.show_data', ['id' => $data->CourseID], []);
+            $url_delete = Url::fromRoute('frocole.delete_form', ['id' => $data->CourseID], []);
+            $url_edit = Url::fromRoute('frocole.add_form', ['id' => $data->CourseID], []);
+            $url_view = Url::fromRoute('frocole.show_data', ['id' => $data->CourseID], []);
 
             $linkDelete = Link::fromTextAndUrl('Delete', $url_delete);
             $linkEdit = Link::fromTextAndUrl('Edit', $url_edit);
@@ -64,7 +64,7 @@ class DisplayTableController extends ControllerBase
 
         }
 
-        $url = Url::fromRoute('mymodule.add_form');
+        $url = Url::fromRoute('frocole.add_form');
 
         $form['add'] = [
           '#type' => 'item',
