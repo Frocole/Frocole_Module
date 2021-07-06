@@ -25,11 +25,17 @@ class AddForm extends FormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state)
     {
+        $request = \Drupal::request();
+        if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+          $title = (isset($_GET['id'])) ? "Edit Course": "Add Course";
+          $route->setDefault('_title', $title);
+        }
+
         $url = Url::fromRoute('frocole.display_data');
 
         $form['index'] = [
         '#type' => 'item',
-        '#markup' => '<a href="'.$url->toString().'">View Courses</a>',
+        '#markup' => '<a href="'.$url->toString().'">View All Courses</a>',
         ];
 
         $conn = Database::getConnection('default', 'frocole');

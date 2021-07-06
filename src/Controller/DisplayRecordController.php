@@ -67,7 +67,7 @@ class DisplayRecordController extends ControllerBase
             
             $export_url = Url::fromRoute('frocole.export_form', ['id' => $groupID], []);
 
-            $groups .= '<li>[<a href="'.$export_url->toString().'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
+            $groups .= '<li>[<a href="'.$export_url->toString().'" title="Export feedback to CSV/Excel">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
             $groups .= $this->FetchGroupUsers($conn, $groupID);
         }
         $groups = "<ul>$groups</ul>";

@@ -28,7 +28,7 @@ class DeleteForm extends ConfirmFormBase
 
     public function getQuestion()
     {
-        return t('Delete data');
+        return t('Delete course');
     }
 
     public function getCancelUrl()
@@ -38,7 +38,7 @@ class DeleteForm extends ConfirmFormBase
 
     public function getDescription()
     {
-        return t('Do you want to delete data number %id ?', array('%id' => $this->id));
+        return t('Do you want to delete course number %id ?', array('%id' => $this->id));
     }
 
     /**
