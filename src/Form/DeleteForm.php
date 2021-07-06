@@ -15,7 +15,6 @@ use Drupal\Core\Url;
  */
 class DeleteForm extends ConfirmFormBase
 {
-
     public $id;
 
     /**
@@ -38,7 +37,7 @@ class DeleteForm extends ConfirmFormBase
 
     public function getDescription()
     {
-        return t('Do you want to delete course number %id ?', array('%id' => $this->id));
+        return t('Do you want to delete Course with ID %id ?', array('%id' => $this->id));
     }
 
     /**
@@ -63,6 +62,7 @@ class DeleteForm extends ConfirmFormBase
     public function buildForm(array $form, FormStateInterface $form_state, $id = null)
     {
         $this->id = $id;
+        
         return parent::buildForm($form, $form_state);
     }
 
@@ -80,10 +80,15 @@ class DeleteForm extends ConfirmFormBase
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $query = Database::getConnection('default', 'frocole');
-        $query->delete('courses')
+        $query
+            ->delete('courses')
             ->condition('CourseID', $this->id)
             ->execute();
-        \Drupal::messenger()->addStatus('Succesfully deleted.');
+        
+        // show message and redirect to list page
+        \Drupal::messenger()
+            ->addMessage($this->t('Succesfully deleted a Course with ID %id.', [ '%id' => $this->id ]));
+
         $form_state->setRedirect('frocole.display_data');
     }
 }

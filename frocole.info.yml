@@ -2,4 +2,5 @@ name: 'Frocole Module'
 description: 'Frocole Management and Export Module'
 package: Custom
 type: module
+core_version_requirement: ^8 || ^9
 core: 8.x

@@ -27,8 +27,8 @@ class AddForm extends FormBase
     {
         $request = \Drupal::request();
         if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
-          $title = (isset($_GET['id'])) ? "Edit Course": "Add Course";
-          $route->setDefault('_title', $title);
+            $title = (isset($_GET['id'])) ? "Edit Course": "Add Course";
+            $route->setDefault('_title', $title);
         }
 
         $url = Url::fromRoute('frocole.display_data');
@@ -41,7 +41,8 @@ class AddForm extends FormBase
         $conn = Database::getConnection('default', 'frocole');
         $data = array();
         if (isset($_GET['id'])) {
-            $query = $conn->select('courses', 'm')
+            $query = $conn
+                ->select('courses', 'm')
                 ->condition('CourseID', $_GET['id'])
                 ->fields('m');
             $data = $query->execute()->fetchAssoc();
@@ -128,14 +129,28 @@ class AddForm extends FormBase
 
         if (isset($_GET['id'])) {
             // update data in database
-            Database::getConnection('default', 'frocole')->update('courses')->fields($data)->condition('CourseID', $_GET['id'])->execute();
+            Database::getConnection('default', 'frocole')
+                ->update('courses')
+                ->fields($data)
+                ->condition('CourseID', $_GET['id'])
+                ->execute();
         } else {
             // insert data to database
-            Database::getConnection('default', 'frocole')->insert('courses')->fields($data)->execute();
+            Database::getConnection('default', 'frocole')
+                ->insert('courses')
+                ->fields($data)
+                ->execute();
         }
 
         // show message and redirect to list page
-        \Drupal::messenger()->addStatus('Succesfully saved');
+        if (isset($_GET['id'])) {
+            \Drupal::messenger()
+                ->addMessage($this->t('Succesfully edited an existing Course with ID %id.', [ '%id' => $_GET['id']]));
+        } else {
+            \Drupal::messenger()
+                ->addMessage($this->t('Succesfully added a new Course.', [ ]));
+        }
+
         $url = new Url('frocole.display_data');
         $response = new RedirectResponse($url->toString());
         $response->send();
