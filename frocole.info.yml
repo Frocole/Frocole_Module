@@ -1,6 +1,10 @@
-name: 'Frocole Module'
-description: 'Frocole Management and Export Module'
+name: "Frocole Module"
+description: "Frocole Management and Export Module"
 package: Custom
 type: module
 core_version_requirement: ^8 || ^9
+project: "frocole"
 core: 8.x
+
+"interface translation project": frocole
+"interface translation server pattern": modules/custom/frocole/translations/%language.po

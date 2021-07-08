@@ -16,20 +16,25 @@ class DisplayTableController extends ControllerBase
 {
     public function index()
     {
-        //create table header
+        // Fails
+        //$request = \Drupal::request();
+        //if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+        //    $route->setDefault('_title', t('All Courses'));
+        //}
+
+        // create table header
         $header_table = array(
             'CourseID' => t('Course ID'),
             'CourseName' => t('Course Name'),
             'IPF_RD_parameters' => t('Individual Performance'),
             'GPF_RD_parameters' => t('Group Performance'),
-            'LeraarUserID' => t('leraar'),
-            'CourseActive' => t('active'),
+            'LeraarUserID' => t('Teacher'),
+            'CourseActive' => t('Active'),
 
             'view' => t('View'),
             'delete' => t('Delete'),
             'edit' => t('Edit'),
         );
-
 
         // get data from database
         $query = Database::getConnection('default', 'frocole')->select('courses', 'c');
@@ -42,9 +47,9 @@ class DisplayTableController extends ControllerBase
             $url_edit = Url::fromRoute('frocole.add_form', ['id' => $data->CourseID], []);
             $url_view = Url::fromRoute('frocole.show_data', ['id' => $data->CourseID], []);
 
-            $linkDelete = Link::fromTextAndUrl('Delete', $url_delete);
-            $linkEdit = Link::fromTextAndUrl('Edit', $url_edit);
-            $linkView = Link::fromTextAndUrl('View', $url_view);
+            $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
+            $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
+            $linkView = Link::fromTextAndUrl(t('View'), $url_view);
 
             //get data
             $rows[] = array(
@@ -54,8 +59,6 @@ class DisplayTableController extends ControllerBase
                 'GPF_RD_parameters' => $data->GPF_RD_parameters,
                 'LeraarUserID' => $data->LeraarUserID,
                 'CourseActive' => $data->CourseActive,
-
-                // TODO Show list of groups as well here?
 
                 'view' => $linkView,
                 'delete' => $linkDelete,
@@ -68,7 +71,7 @@ class DisplayTableController extends ControllerBase
 
         $form['add'] = [
           '#type' => 'item',
-          '#markup' => '<a href="'.$url->toString().'">Add a new Course</a>',
+          '#markup' => '<a href="'.$url->toString().'">'.t('Add a new Course').'</a>',
         ];
         
         // render table

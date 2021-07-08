@@ -27,7 +27,7 @@ class DeleteForm extends ConfirmFormBase
 
     public function getQuestion()
     {
-        return t('Delete course');
+        return t('Delete Course');
     }
 
     public function getCancelUrl()
@@ -61,6 +61,11 @@ class DeleteForm extends ConfirmFormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state, $id = null)
     {
+        $request = \Drupal::request();
+        if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+            $route->setDefault('_title', t('Delete Course'));
+        }
+        
         $this->id = $id;
         
         return parent::buildForm($form, $form_state);

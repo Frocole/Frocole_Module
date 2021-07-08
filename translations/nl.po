@@ -1,0 +1,112 @@
+# Dutch translation of Frocole Frontend
+#
+msgid ""
+msgstr ""
+
+# [DisplayTableController.php]
+
+msgid "All Courses"
+msgstr "Alle Cursussen"
+
+msgid "Add a new Course'"
+msgstr "Voeg een nieuwe Cursus toe"
+
+msgid "Course ID"
+msgstr "Cursus ID"
+
+msgid "Course Name"
+msgstr "Cursusnaam"
+
+msgid "Individual Performance"
+msgstr "Individuele Performance"
+
+msgid "Group Performance"
+msgstr "Groep Performance"
+
+msgid "Teacher"
+msgstr "Leraar"
+
+msgid "No data found"
+msgstr "Geen data gevonden"
+
+#D9 View
+#D9 Delete
+#D9 Edit
+#D9 Active
+
+# [DisplayRecordController.php]
+
+msgid "Show Course"
+msgstr "Bekijk Cursus"
+
+msgid "Add a new Course"
+msgstr "Voeg nieuwe Cursus toe"
+
+msgid "View All Courses"
+msgstr "Bekijk alle Cursussen"
+
+msgid "No Groups"
+msgstr "Geen Groepen"
+
+msgid "No Users"
+msgstr "Geen Gebruikers"
+
+msgid "Export feedback to CSV/Excel"
+msgstr "Exporteer feedback naar CSC/Excel"
+
+#D9 Groups
+
+# [AddForm.php]
+
+#msgid "Edit Course"
+#msgstr "Wijzig Cursus"
+
+msgid "Add Course"
+msgstr "Voeg Cursus toe"
+
+msgid "Succesfully added a new Course."
+msgstr "De nieuwe Cursus is successvol toegevoegd."
+
+msgid "Succesfully edited an existing Course with ID %id."
+msgstr "De Cursus met ID %d is successvol gewijzigd."
+
+msgid "Select Teacher"
+msgstr "Selecteer Leraar"
+
+#msgid "Enter 3..10 performance indicator labels, separated by a formard slash (/)."
+#msgstr "Vul 3..10 performance indicator labels in, gescheiden door een slash (/)."
+
+#msgid "Error: The minimum number of individual performance indicators is 3."
+#msgstr "Fout: Het minimum aantal individuele performance indicatoren is 3."
+
+#msgid "Error: The maximum number of individual performance indicators is 10."
+#msgstr "Fout: Het maximum aantal individuele performance indicatoren is 10."
+
+#msgid "Error: The minimum number of group performance indicators is 3."
+#msgstr "Fout: Het minimum aantal groep performance indicatoren is 3."
+
+#msgid "Error: The maximum number of group performance indicators is 10."
+#msgstr "Fout: Het maximum aantal groep performance indicatoren is 10."
+
+msgid "'%msg: The maximum number of %ip performance %in is %no.'"
+msgstr "'%msg: Het maximum aantal %ip performance %in is %no.'"
+
+msgid "individual"
+msgstr "individuele"
+
+msgid "indicators"
+msgstr "indicatoren"
+
+# [DeleteForm.php]
+
+msgid "Delete it!"
+msgstr "Verwijder!"
+
+msgid "Do you want to delete Course with ID %id ?"
+msgstr "Wilt U de Cursus met ID %id verwijderen ?"
+
+msgid "Succesfully deleted a Course with ID %id."
+msgstr "De Cursus met ID %id is succesvol verwijderd."
+
+msgid "Delete Course"
+msgstr "Verwijder Cursus"

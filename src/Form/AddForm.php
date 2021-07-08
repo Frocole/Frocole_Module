@@ -27,15 +27,15 @@ class AddForm extends FormBase
     {
         $request = \Drupal::request();
         if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
-            $title = (isset($_GET['id'])) ? "Edit Course": "Add Course";
+            $title = isset($_GET['id']) ? 'Edit Course' : 'Add Course';
             $route->setDefault('_title', $title);
         }
 
         $url = Url::fromRoute('frocole.display_data');
 
-        $form['index'] = [
+        $form['add'] = [
         '#type' => 'item',
-        '#markup' => '<a href="'.$url->toString().'">View All Courses</a>',
+        '#markup' => '<a href="'.$url->toString().'">'.t('View All Courses').'</a>',
         ];
 
         $conn = Database::getConnection('default', 'frocole');
@@ -62,6 +62,7 @@ class AddForm extends FormBase
         $form['IPF_RD_parameters'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Individual Performance'),
+        '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
         '#required' => true,
         '#size' => 60,
         '#default_value' => (isset($data['IPF_RD_parameters'])) ? $data['IPF_RD_parameters'] : '',
@@ -70,6 +71,7 @@ class AddForm extends FormBase
         $form['GPF_RD_parameters'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Group Performance'),
+        '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
         '#required' => true,
         '#default_value' => (isset($data['GPF_RD_parameters'])) ? $data['GPF_RD_parameters'] : '',
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
@@ -78,8 +80,7 @@ class AddForm extends FormBase
         // Find all users and their id's.
         $form['LeraarUserID'] = [
         '#type' => 'select',
-        '#title' => $this
-        ->t('Select leraar'),
+        '#title' => $this->t('Select Teacher'),
         '#options' => $this->FetchUsers(),
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
         '#default_value' => (isset($data['LeraarUserID'])) ? $data['LeraarUserID'] : '',
@@ -88,7 +89,7 @@ class AddForm extends FormBase
         $form['CourseActive'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('active'),
-        '#required' => true,
+        '#required' => false,
         '#default_value' => (isset($data['CourseActive'])) ? $data['CourseActive'] : '',
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
         ];
@@ -108,11 +109,37 @@ class AddForm extends FormBase
      */
     public function validateForm(array &$form, FormStateInterface $form_state)
     {
-        if (is_numeric($form_state->getValue('first_name'))) {
-            $form_state->setErrorByName('first_name', $this->t('Error, The First Name Must Be A String'));
+        $ipf = count(explode('/', trim($form_state->getValue('IPF_RD_parameters'),'/')));
+        $gpf = count(explode('/', trim($form_state->getValue('GPF_RD_parameters'),'/')));
+
+        if ($ipf<3) {
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
+                '%msg' => $this->t('Error'),
+                '%pi' =>  $this->t('individual'),
+                '%in' => $this->t('indicators'),
+                '%no' => 3 ]));
+        } else if ($ipf>10) {
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
+                '%msg' => $this->t('Error'),
+                '%pi' =>  $this->t('individual'),
+                '%in' => $this->t('indicators'),
+                '%no' => 10 ]));
+        }
+
+        if ($gpf<3) {
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
+                '%msg' => $this->t('Error'),
+                '%pi' =>  $this->t('group'),
+                '%in' => $this->t('indicators'),
+                '%no' => 3 ]));
+        } else if ($gpf>10) {
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
+                '%msg' => $this->t('Error'),
+                '%pi' =>  $this->t('group'),
+                '%in' => $this->t('indicators'),
+                '%no' => 10 ]));
         }
     }
-
 
     /**
      * {@inheritdoc}
@@ -120,11 +147,11 @@ class AddForm extends FormBase
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $data = array(
-        'CourseName' => $form_state->getValue('CourseName'),
-        'IPF_RD_parameters' => $form_state->getValue('IPF_RD_parameters'),
-        'GPF_RD_parameters' => $form_state->getValue('GPF_RD_parameters'),
-        'LeraarUserID' => $form_state->getValue('LeraarUserID'),
-        'CourseActive' => $form_state->getValue('CourseActive'),
+            'CourseName' => $form_state->getValue('CourseName'),
+            'IPF_RD_parameters' => $form_state->getValue('IPF_RD_parameters'),
+            'GPF_RD_parameters' => $form_state->getValue('GPF_RD_parameters'),
+            'LeraarUserID' => $form_state->getValue('LeraarUserID'),
+            'CourseActive' => $form_state->getValue('CourseActive'),
         );
 
         if (isset($_GET['id'])) {
