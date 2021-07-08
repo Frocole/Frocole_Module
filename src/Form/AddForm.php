@@ -115,13 +115,13 @@ class AddForm extends FormBase
         if ($ipf<3) {
             $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
-                '%pi' =>  $this->t('individual'),
+                '%ip' =>  $this->t('individual'),
                 '%in' => $this->t('indicators'),
                 '%no' => 3 ]));
         } else if ($ipf>10) {
             $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
-                '%pi' =>  $this->t('individual'),
+                '%ip' =>  $this->t('individual'),
                 '%in' => $this->t('indicators'),
                 '%no' => 10 ]));
         }
@@ -129,13 +129,13 @@ class AddForm extends FormBase
         if ($gpf<3) {
             $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
-                '%pi' =>  $this->t('group'),
+                '%ip' =>  $this->t('group'),
                 '%in' => $this->t('indicators'),
                 '%no' => 3 ]));
         } else if ($gpf>10) {
             $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
-                '%pi' =>  $this->t('group'),
+                '%ip' =>  $this->t('group'),
                 '%in' => $this->t('indicators'),
                 '%no' => 10 ]));
         }
