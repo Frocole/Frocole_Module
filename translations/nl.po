@@ -73,21 +73,6 @@ msgstr "De Cursus met ID %d is successvol gewijzigd."
 msgid "Select Teacher"
 msgstr "Selecteer Leraar"
 
-#msgid "Enter 3..10 performance indicator labels, separated by a formard slash (/)."
-#msgstr "Vul 3..10 performance indicator labels in, gescheiden door een slash (/)."
-
-#msgid "Error: The minimum number of individual performance indicators is 3."
-#msgstr "Fout: Het minimum aantal individuele performance indicatoren is 3."
-
-#msgid "Error: The maximum number of individual performance indicators is 10."
-#msgstr "Fout: Het maximum aantal individuele performance indicatoren is 10."
-
-#msgid "Error: The minimum number of group performance indicators is 3."
-#msgstr "Fout: Het minimum aantal groep performance indicatoren is 3."
-
-#msgid "Error: The maximum number of group performance indicators is 10."
-#msgstr "Fout: Het maximum aantal groep performance indicatoren is 10."
-
 msgid "'%msg: The maximum number of %ip performance %in is %no.'"
 msgstr "'%msg: Het maximum aantal %ip performance %in is %no.'"
 
