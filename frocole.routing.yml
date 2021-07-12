@@ -20,7 +20,7 @@ frocole.delete_form:
     _form: '\Drupal\frocole\Form\DeleteForm'
     _title: 'Delete Course'
   requirements:
-    _access: 'access administration pages'
+    _permission: 'access administration pages'
 
 frocole.add_form:
   path: '/admin/frocole/add'
@@ -36,5 +36,5 @@ frocole.export_form:
     _controller: '\Drupal\frocole\Controller\ExportController::export'
     _title: 'Export Feedback'
   requirements:
-    _access: 'access administration pages'
+    _permission: 'access administration pages'
 
