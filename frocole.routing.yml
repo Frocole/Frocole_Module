@@ -4,7 +4,7 @@ frocole.display_data:
     _controller: '\Drupal\frocole\Controller\DisplayTableController::index'
     _title: 'All Courses'
   requirements:
-    _permission: 'access content'
+    _permission: 'access administration pages'
 
 frocole.show_data:
   path: '/admin/frocole/{id}/show'
@@ -12,7 +12,7 @@ frocole.show_data:
     _controller: '\Drupal\frocole\Controller\DisplayRecordController::show'
     _title: 'Show Course'
   requirements:
-    _permission: 'access content'
+    _permission: 'access administration pages'
 
 frocole.delete_form:
   path: '/admin/frocole/{id}/delete'
@@ -20,7 +20,7 @@ frocole.delete_form:
     _form: '\Drupal\frocole\Form\DeleteForm'
     _title: 'Delete Course'
   requirements:
-    _access: 'TRUE'
+    _access: 'access administration pages'
 
 frocole.add_form:
   path: '/admin/frocole/add'
@@ -28,7 +28,7 @@ frocole.add_form:
     _title: 'Add/Edit a Course'
     _form: '\Drupal\frocole\Form\AddForm'
   requirements:
-    _permission: 'access content'
+    _permission: 'access administration pages'
 
 frocole.export_form:
   path: '/admin/frocole/{id}/export'
@@ -36,5 +36,5 @@ frocole.export_form:
     _controller: '\Drupal\frocole\Controller\ExportController::export'
     _title: 'Export Feedback'
   requirements:
-    _access: 'TRUE'
+    _access: 'access administration pages'
 
