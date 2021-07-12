@@ -7,8 +7,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\Component\Utility\Html;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 
 class AddForm extends FormBase
 {
@@ -109,9 +109,15 @@ class AddForm extends FormBase
      */
     public function validateForm(array &$form, FormStateInterface $form_state)
     {
-        $ipf = count(explode('/', trim($form_state->getValue('IPF_RD_parameters'),'/')));
-        $gpf = count(explode('/', trim($form_state->getValue('GPF_RD_parameters'),'/')));
+        $ip=$form_state->getValue('IPF_RD_parameters');
+        $gp=$form_state->getValue('GPF_RD_parameters');
 
+        $conn = Database::getConnection('default', 'frocole');
+        
+        $ipf = count(explode('/', trim($ip,'/')));
+        $gpf = count(explode('/', trim($gp,'/')));
+
+        // Check Min/Max Number of indicators.
         if ($ipf<3) {
             $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
@@ -126,6 +132,7 @@ class AddForm extends FormBase
                 '%no' => 10 ]));
         }
 
+        // Check Min/Max Number of indicators.
         if ($gpf<3) {
             $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
                 '%msg' => $this->t('Error'),
@@ -138,6 +145,56 @@ class AddForm extends FormBase
                 '%ip' =>  $this->t('group'),
                 '%in' => $this->t('indicators'),
                 '%no' => 10 ]));
+        }        
+
+        // Check leading or trailing separators.
+        if ($ip != trim($ip,'/')) {
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The input contains to many separators.', [
+                '%msg' => $this->t('Error'),
+            ]));
+        }
+
+        // Check leading or trailing separators.
+        if ($gp != trim($gp,'/')) {
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The input contains to many separators.', [
+                '%msg' => $this->t('Error'),
+            ]));
+        }
+
+        // Check on empty indicators.
+        if (in_array("", explode('/', trim($ip,'/')))) {
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The input contains empty %in.', [
+                '%msg' => $this->t('Error'),
+                '%in' => $this->t('indicators'),
+            ]));
+        }
+
+        // Check on empty indicators.
+        if (in_array("", explode('/', trim($gp,'/')))) {
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The input contains empty %in.', [
+                '%msg' => $this->t('Error'),
+                '%in' => $this->t('indicators'),
+            ]));
+        }
+
+        // Check for illegal characters.
+        //
+        // Warning: some mismatches between escape methods.
+        //
+        // mysqli_real_escape_string(): NUL (ASCII 0), \n, \r, \, ', ", and Control-Z.
+        // Html::escape():              & (ampersand), " (double quote), ' (single quote), < (less than), > (greater than).
+
+        if ($ip != Html::escape(trim($ip,'/'))) {
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The input contains illegal characters.', [
+                '%msg' => $this->t('Error'),
+            ]));
+        }
+
+        // Check for illegal characters.
+        if ($gp != Html::escape(trim($gp,'/'))) {
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The input contains illegal characters.', [
+                '%msg' => $this->t('Error'),
+            ]));
         }
     }
 

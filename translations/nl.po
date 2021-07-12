@@ -73,8 +73,17 @@ msgstr "De Cursus met ID %d is successvol gewijzigd."
 msgid "Select Teacher"
 msgstr "Selecteer Leraar"
 
-msgid "'%msg: The maximum number of %ip performance %in is %no.'"
-msgstr "'%msg: Het maximum aantal %ip performance %in is %no.'"
+msgid "%msg: The maximum number of %ip performance %in is %no."
+msgstr "%msg: Het maximum aantal %ip performance %in is %no."
+
+msgid "%msg: The input contains illegal characters."
+msgstr "%msg: De input bevat illegale tekens."
+
+msgid "%msg: The input contains empty %in."
+msgstr "%msg: De input bevat lege %in."
+
+msgid "%msg: The input contains to many separators."
+msgstr "%msg: De input bevat teveel scheidingstekens."
 
 msgid "individual"
 msgstr "individuele"
