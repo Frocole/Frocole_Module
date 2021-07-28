@@ -22,6 +22,7 @@ More Management UI
 
 * Add UI for managing users (move people of of a group)?
 * Make sure teacher selection scales well (be able to mark them as teacher (and default to false) ?)
+* Add Remove User from Group link to Users table.
 
 ----
 Further integration.

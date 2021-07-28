@@ -94,6 +94,7 @@ class DisplayRecordController extends ControllerBase
                     <strong>".t('Active')."</strong>
                     <p>$active</p>
                     <strong>".t('Groups')."</strong>
+                    <hr>
                     <p>$groups</p>"
         ];
     }
