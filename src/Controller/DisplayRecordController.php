@@ -76,8 +76,8 @@ class DisplayRecordController extends ControllerBase
             $groups = "<li><i>".t('No Groups')."</i>";
         }
         
-        $groups = "<table>".$groups."</table>";
-    
+        $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>".$groups."</table>";
+        
         $url = Url::fromRoute('frocole.display_data');
         
         return [
@@ -144,11 +144,12 @@ class DisplayRecordController extends ControllerBase
             $users .= "<tr>";
             $users .= "<td span='2'>".t('No Users')."</td>";
             $users .= "<tr>";
+
+            $users = "<table>".$users."</table>";
         } else {
-            // $users = "<ul>$users</ul>";
+            $users = "<table><tr><th>UserID</th><th>Username</th></tr>".$users."</table>";
         }
 
-        $users = "<table>".$users."</table>";
 
         return $users;
     }
