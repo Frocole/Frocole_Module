@@ -60,6 +60,7 @@ class DisplayRecordController extends ControllerBase
         
         //[Groups]
         $groups = "";
+        
         foreach ($data as $record) {
             // Do something with each $record
             $groupID = $record['GroupID'];
@@ -67,14 +68,15 @@ class DisplayRecordController extends ControllerBase
             
             $export_url = Url::fromRoute('frocole.export_form', ['id' => $groupID], []);
 
-            $groups .= '<li>[<a href="'.$export_url->toString().'" title="'.t('Export feedback to CSV/Excel').'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]&nbsp;'.$group;
-            $groups .= $this->FetchGroupUsers($conn, $groupID);
+            $groups .= '<tr><td>[<a href="'.$export_url->toString().'" title="'.t('Export feedback to CSV/Excel').'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]</td><td>'.$group.'</td><td>'.$this->FetchGroupUsers($conn, $groupID).'</td></tr>';
+            //$groups .= $this->FetchGroupUsers($conn, $groupID);
         }
 
         if (strlen($groups) === 0) {
             $groups = "<li><i>".t('No Groups')."</i>";
         }
-        $groups = "<ul>$groups</ul>";
+        
+        $groups = "<table>".$groups."</table>";
     
         $url = Url::fromRoute('frocole.display_data');
         
@@ -125,19 +127,27 @@ class DisplayRecordController extends ControllerBase
 
          //[Users]
         $users = "";
+
         foreach ($data as $record) {
             // Do something with each $record
-            $userID = $record['userID'];
+            $userID = $record['UserID'];
             $user = $record['Username'];
 
-              $users .= "<li>[".str_pad($userID, 4, '0', STR_PAD_LEFT)."]&nbsp;".$user;
+            $users .= "<tr>";
+            //str_pad($userID, 4, '0', STR_PAD_LEFT)
+            $users .= "<td>".$userID."</td><td>".$user."</td>";
+            $users .= "</tr>";
         }
 
         if (strlen($users) === 0) {
-            $users = "<ul><li><i>".t('No Users')."</i></ul>";
+            $users .= "<tr>";
+            $users .= "<td span='2'>".t('No Users')."</td>";
+            $users .= "<tr>";
         } else {
-            $users = "<ul>$users</ul>";
+            // $users = "<ul>$users</ul>";
         }
+
+        $users = "<table>".$users."</table>";
 
         return $users;
     }
