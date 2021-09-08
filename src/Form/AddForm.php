@@ -214,14 +214,14 @@ class AddForm extends FormBase
         if (isset($_GET['id'])) {
             // update data in database
             Database::getConnection('default', 'frocole')
-                ->update('courses')
+                ->update('Courses')
                 ->fields($data)
                 ->condition('CourseID', $_GET['id'])
                 ->execute();
         } else {
             // insert data to database
             Database::getConnection('default', 'frocole')
-                ->insert('courses')
+                ->insert('Courses')
                 ->fields($data)
                 ->execute();
         }
