@@ -36,7 +36,7 @@ class ExportController extends ControllerBase
         // Creating a dynamic csv for download using Symphony:
         //
         // See http://web.archive.org/web/20190915170056/http://obtao.com/blog/2013/12/export-data-to-a-csv-file-with-symfony/
-        //      
+        //
         $response = new StreamedResponse(
             function () use ($id) {
                 $conn = Database::getConnection('default', 'frocole');
@@ -46,9 +46,9 @@ class ExportController extends ControllerBase
 
                 // Get Fields.
                 $fields = $conn
-                    ->query("DESCRIBE feedbackitems")
+                    ->query("DESCRIBE FeedBackItems")
                     ->fetchAll();
- 
+
                 $fieldnames = array();
                 foreach ($fields as $field) {
                     array_push($fieldnames, $field->Field);
@@ -58,22 +58,22 @@ class ExportController extends ControllerBase
 
                 // Get Data to Export.
                 $query = $conn
-                    ->select('feedbackitems', 'f')
+                    ->select('FeedBackItems', 'f')
                     ->condition('GroupID', $id)
                     ->fields('f');
                 $data = $query
                     ->execute()
                     ->fetchAllAssoc('FeedBackItemID', \PDO::FETCH_ASSOC);
-            
+
                 foreach ($data as $record) {
                     fputcsv(
-                        $csv, array(    
-                        $record['FeedBackItemID'], 
-                        $record['Timestamp'], 
-                        $record['GroupID'], 
-                        $record['FeedbackSuplierID'], 
-                        $record['Subject'], 
-                        $record['Parameter'], 
+                        $csv, array(
+                        $record['FeedBackItemID'],
+                        $record['Timestamp'],
+                        $record['GroupID'],
+                        $record['FeedbackSuplierID'],
+                        $record['Subject'],
+                        $record['Parameter'],
                         $record['Score'])
                     );
                 }
@@ -86,10 +86,10 @@ class ExportController extends ControllerBase
         // download or show as text.
         //
         $download = true;
-        
+
         $response->headers->set('Content-Type', $download ? 'text/csv' : 'text/plain');
         $response->headers->set('Content-Disposition', ($download ? 'attachment' : 'inline') . '; filename=' . 'frocole_group_'.$id . '.csv');
-    
+
         return $response;
     }
 }

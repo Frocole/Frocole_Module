@@ -10,7 +10,7 @@
             "request": "launch",
             "port": 9000,
             "pathMappings": {
-                "c:/xampp/htdocs/frocole_drupal/modules/frocole": "${workspaceFolder}"
+                "c:/xampp/htdocs/frocole_drupal/modules/custom/frocole": "${workspaceFolder}"
               },
               "xdebugSettings": {
                 "show_hidden": 1

@@ -27,18 +27,18 @@ class DisplayRecordController extends ControllerBase
         $conn = Database::getConnection('default', 'frocole');
 
         $query = $conn
-            ->select('courses', 'c')
+            ->select('Courses', 'c')
             ->condition('c.CourseID', $id);
-    
+
         //see https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
-        $query->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        $query->join('Users', 'u', 'c.LeraarUserID=u.UserID');
         $query->fields('c');
         $query->fields('u', ['Username']);
-    
+
         $data = $query
             ->execute()
             ->fetchAssoc();
-    
+
         //[Courses]
         $course_name = $data['CourseName'];
         $ipf = $data['IPF_RD_parameters'];
@@ -48,24 +48,24 @@ class DisplayRecordController extends ControllerBase
 
         //[Leraar]
         $leraar = $data['Username'];
-    
+
         //[Groups]
         $query = $conn
-            ->select('groups', 'g')
+            ->select('Groups', 'g')
             ->condition('g.CourseID', $id)
             ->fields('g');
         $data = $query
             ->execute()
             ->fetchAllAssoc('GroupID', \PDO::FETCH_ASSOC);
-        
+
         //[Groups]
         $groups = "";
-        
+
         foreach ($data as $record) {
             // Do something with each $record
             $groupID = $record['GroupID'];
             $group = $record['GroupNickname'];
-            
+
             $export_url = Url::fromRoute('frocole.export_form', ['id' => $groupID], []);
 
             $groups .= '<tr><td>[<a href="'.$export_url->toString().'" title="'.t('Export feedback to CSV/Excel').'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]</td><td>'.$group.'</td><td>'.$this->FetchGroupUsers($conn, $groupID).'</td></tr>';
@@ -75,14 +75,14 @@ class DisplayRecordController extends ControllerBase
         if (strlen($groups) === 0) {
             $groups = "<li><i>".t('No Groups')."</i>";
         }
-        
+
         $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>".$groups."</table>";
-        
+
         $url = Url::fromRoute('frocole.display_data');
-        
+
         return [
         '#type' => 'markup',
-        '#markup' => 
+        '#markup' =>
                     "<a href='".$url->toString()."'>".t('View All Courses')."</a>
                     <h1>$course_name</h1><br>
                     <strong>IPF_RD</strong>
@@ -106,7 +106,7 @@ class DisplayRecordController extends ControllerBase
     {
         return "<ul><li>".str_replace('/', '<li>', $pf)."</ul>";
     }
-  
+
     /**
      * @return html list containing all users and their id's of a group.
      */
@@ -114,9 +114,9 @@ class DisplayRecordController extends ControllerBase
     {
         //[Groups]
          $query = $conn
-              ->select('userandgrouprelations', 'r');
+              ->select('UserAndGroupRelations', 'r');
 
-        $query->join('users', 'u', 'r.UserID=u.UserID');
+        $query->join('Users', 'u', 'r.UserID=u.UserID');
         $query->condition('r.GroupID', $groupID);
         $query
             ->fields('r')

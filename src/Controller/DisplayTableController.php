@@ -37,7 +37,7 @@ class DisplayTableController extends ControllerBase
         );
 
         // get data from database
-        $query = Database::getConnection('default', 'frocole')->select('courses', 'c');
+        $query = Database::getConnection('default', 'frocole')->select('Courses', 'c');
         $query->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'LeraarUserID', 'CourseActive']);
         $results = $query->execute()->fetchAll();
 
@@ -73,7 +73,7 @@ class DisplayTableController extends ControllerBase
           '#type' => 'item',
           '#markup' => '<a href="'.$url->toString().'">'.t('Add a new Course').'</a>',
         ];
-        
+
         // render table
         $form['table'] = [
         '#type' => 'table',
