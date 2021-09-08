@@ -42,7 +42,7 @@ class AddForm extends FormBase
         $data = array();
         if (isset($_GET['id'])) {
             $query = $conn
-                ->select('courses', 'm')
+                ->select('Courses', 'm')
                 ->condition('CourseID', $_GET['id'])
                 ->fields('m');
             $data = $query->execute()->fetchAssoc();
@@ -113,19 +113,19 @@ class AddForm extends FormBase
         $gp=$form_state->getValue('GPF_RD_parameters');
 
         $conn = Database::getConnection('default', 'frocole');
-        
+
         $ipf = count(explode('/', trim($ip,'/')));
         $gpf = count(explode('/', trim($gp,'/')));
 
         // Check Min/Max Number of indicators.
         if ($ipf<3) {
-            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [
                 '%msg' => $this->t('Error'),
                 '%ip' =>  $this->t('individual'),
                 '%in' => $this->t('indicators'),
                 '%no' => 3 ]));
         } else if ($ipf>10) {
-            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
+            $form_state->setErrorByName('IPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [
                 '%msg' => $this->t('Error'),
                 '%ip' =>  $this->t('individual'),
                 '%in' => $this->t('indicators'),
@@ -134,18 +134,18 @@ class AddForm extends FormBase
 
         // Check Min/Max Number of indicators.
         if ($gpf<3) {
-            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [ 
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The minimum number of %ip performance %in is %no.', [
                 '%msg' => $this->t('Error'),
                 '%ip' =>  $this->t('group'),
                 '%in' => $this->t('indicators'),
                 '%no' => 3 ]));
         } else if ($gpf>10) {
-            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [ 
+            $form_state->setErrorByName('GPF_RD_parameters', $this->t('%msg: The maximum number of %ip performance %in is %no.', [
                 '%msg' => $this->t('Error'),
                 '%ip' =>  $this->t('group'),
                 '%in' => $this->t('indicators'),
                 '%no' => 10 ]));
-        }        
+        }
 
         // Check leading or trailing separators.
         if ($ip != trim($ip,'/')) {
@@ -247,7 +247,7 @@ class AddForm extends FormBase
     {
         // [Users]
         $query = Database::getConnection('default', 'frocole')
-            ->select('users', 'u')
+            ->select('Users', 'u')
             ->fields('u', ['UserID', 'Username', 'Nickname']);
 
         $data = $query

@@ -65,9 +65,9 @@ class DeleteForm extends ConfirmFormBase
         if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
             $route->setDefault('_title', t('Delete Course'));
         }
-        
+
         $this->id = $id;
-        
+
         return parent::buildForm($form, $form_state);
     }
 
@@ -86,10 +86,10 @@ class DeleteForm extends ConfirmFormBase
     {
         $query = Database::getConnection('default', 'frocole');
         $query
-            ->delete('courses')
+            ->delete('Courses')
             ->condition('CourseID', $this->id)
             ->execute();
-        
+
         // show message and redirect to list page
         \Drupal::messenger()
             ->addMessage($this->t('Succesfully deleted a Course with ID %id.', [ '%id' => $this->id ]));
