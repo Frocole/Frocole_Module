@@ -91,7 +91,7 @@ class AddForm extends FormBase
         '#title' => $this->t('active'),
         '#required' => false,
         '#default_value' => (isset($data['CourseActive'])) ? $data['CourseActive'] : '',
-        '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
+        '#wrapper_attributes' => ['class' => ['col-md-6 col-xs-12']]
         ];
 
         $form['submit'] = [
