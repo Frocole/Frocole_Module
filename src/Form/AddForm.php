@@ -56,7 +56,7 @@ class AddForm extends FormBase
         '#required' => true,
         '#size' => 60,
         '#default_value' => (isset($data['CourseName'])) ? $data['CourseName'] : '',
-        '#maxlength' => 128,
+        '#maxlength' => 20,
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
         ];
         $form['IPF_RD_parameters'] = [
@@ -64,7 +64,7 @@ class AddForm extends FormBase
         '#title' => $this->t('Individual Performance'),
         '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
         '#required' => true,
-        '#size' => 60,
+        '#maxlength' => 255,
         '#default_value' => (isset($data['IPF_RD_parameters'])) ? $data['IPF_RD_parameters'] : '',
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
         ];
@@ -73,6 +73,7 @@ class AddForm extends FormBase
         '#title' => $this->t('Group Performance'),
         '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
         '#required' => true,
+        '#maxlength' => 255,
         '#default_value' => (isset($data['GPF_RD_parameters'])) ? $data['GPF_RD_parameters'] : '',
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
         ];
