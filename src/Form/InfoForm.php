@@ -90,7 +90,7 @@ class InfoForm extends FormBase
                 '%msg' => $this->t('Error'),
             ]));
         }
-        
+
         /*
         if ($info != Html::escape(trim($info,'/'))) {
             $form_state->setErrorByName('info', $this->t('%msg: The input contains illegal characters.', [
@@ -105,8 +105,9 @@ class InfoForm extends FormBase
      */
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
-        $text = str_replace("\r", "\\r", $form_state->getValue('info'));
-        $text = str_replace("\n", "\\n", $text);
+        $text = $form_state->getValue('info');
+        //$text = str_replace("\r", "\\r", $text);
+        //$text = str_replace("\n", "\\n", $text);
 
         $data = array(
             'infoid' => 1,
