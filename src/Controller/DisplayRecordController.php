@@ -31,9 +31,15 @@ class DisplayRecordController extends ControllerBase
             ->condition('c.CourseID', $id);
 
         //see https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
-        $query->join('Users', 'u', 'c.LeraarUserID=u.UserID');
-        $query->fields('c');
-        $query->fields('u', ['Username']);
+        $query
+            ->join('Users', 'u', 'c.LeraarUserID=u.UserID');
+        $query 
+           ->join('Segments', 's', 'c.SegmentID=s.SegmentID');
+        
+        $query
+            ->fields('c')
+            ->fields('u', ['Username'])
+            ->fields('s', ['SegmentName']);
 
         $data = $query
             ->execute()
@@ -43,11 +49,13 @@ class DisplayRecordController extends ControllerBase
         $course_name = $data['CourseName'];
         $ipf = $data['IPF_RD_parameters'];
         $gpf = $data['GPF_RD_parameters'];
+        $segmentID = $data['SegmentID'];
         $leraarID = $data['LeraarUserID'];
         $active = $data['CourseActive'];
 
         //[Leraar]
         $leraar = $data['Username'];
+        $segment = $data["SegmentName"];
 
         //[Groups]
         $query = $conn
@@ -89,6 +97,8 @@ class DisplayRecordController extends ControllerBase
                     <p>".$this->AxisToList($ipf)."</p>
                     <strong>GPF_RD</strong>
                     <p>".$this->AxisToList($gpf)."</p>
+                    <strong>".t('Segment')."</strong>
+                    <p>[".str_pad($segmentID, 4, '0', STR_PAD_LEFT)."]&nbsp;$segment</p>
                     <strong>".t('Teacher')."</strong>
                     <p>[".str_pad($leraarID, 4, '0', STR_PAD_LEFT)."]&nbsp;$leraar</p>
                     <strong>".t('Active')."</strong>

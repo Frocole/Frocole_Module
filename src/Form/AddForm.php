@@ -79,6 +79,15 @@ class AddForm extends FormBase
         ];
 
         // Find all users and their id's.
+        $form['SegmentID'] = [
+            '#type' => 'select',
+            '#title' => $this->t('Select Segment'),
+            '#options' => $this->FetchSegments(),
+            '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
+            '#default_value' => (isset($data['SegmentID'])) ? $data['SegmentID'] : '',
+            ];
+
+        // Find all users and their id's.
         $form['LeraarUserID'] = [
         '#type' => 'select',
         '#title' => $this->t('Select Teacher'),
@@ -197,6 +206,31 @@ class AddForm extends FormBase
                 '%msg' => $this->t('Error'),
             ]));
         }
+
+        // Check if Leraar has the same SegmentID as the Course.
+        $sid = $form_state->getValue('SegmentID');
+        $lid = $form_state->getValue('LeraarUserID');
+
+        //SELECT u.UserID FROM `Users` u WHERE u.UserID=28 AND u.SegmentID=4
+
+         // [segments]m note we can only use the Users table and id's from the form as the course might not be inserted yet.
+         // so check if the LeraarUser matches the Course Segment.
+         $query = Database::getConnection('default', 'frocole')
+            ->select('Users', 'u')
+            ->fields('u')
+            ->condition('UserID', $lid, '=')
+            ->condition('SegmentID', $sid, '=');
+
+        $num_rows = $query
+            ->countQuery()
+            ->execute()
+            ->fetchField();
+
+        if ($num_rows == 0) {
+            $form_state->setErrorByName('Segments', $this->t('%msg: The Leraar\'s segment does not match the Course\'s segment.', [
+                '%msg' => $this->t('Error'),
+            ]));
+        }
     }
 
     /**
@@ -208,6 +242,7 @@ class AddForm extends FormBase
             'CourseName' => $form_state->getValue('CourseName'),
             'IPF_RD_parameters' => $form_state->getValue('IPF_RD_parameters'),
             'GPF_RD_parameters' => $form_state->getValue('GPF_RD_parameters'),
+            'SegmentID' => $form_state->getValue('SegmentID'),
             'LeraarUserID' => $form_state->getValue('LeraarUserID'),
             'CourseActive' => $form_state->getValue('CourseActive'),
         );
@@ -242,7 +277,7 @@ class AddForm extends FormBase
     }
 
     /**
-     * @return an associated array of user'is, their names and nicknames.
+     * @return an associated array of user's, their names and nicknames.
      */
     private function FetchUsers()
     {
@@ -263,4 +298,27 @@ class AddForm extends FormBase
 
         return $result;
     }
+
+    /**
+     * @return an associated array of segments, their names.
+     */
+    private function FetchSegments()
+    {
+        // [segments]
+        $query = Database::getConnection('default', 'frocole')
+            ->select('Segments', 's')
+            ->fields('s', ['SegmentID', 'SegmentName']);
+
+        $data = $query
+            ->execute()
+            ->fetchAllAssoc('SegmentID', \PDO::FETCH_ASSOC);
+
+        $result = array();
+        foreach ($data as $record) {
+            // Do something with each $record
+            $result[$record['SegmentID']] = $record['SegmentName'];
+        }
+
+        return $result;
+    }    
 }

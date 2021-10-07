@@ -28,6 +28,7 @@ class DisplayTableController extends ControllerBase
             'CourseName' => t('Course Name'),
             'IPF_RD_parameters' => t('Individual Performance'),
             'GPF_RD_parameters' => t('Group Performance'),
+            'SegmentID' => t('Segment'),
             'LeraarUserID' => t('Teacher'),
             'CourseActive' => t('Active'),
 
@@ -37,8 +38,10 @@ class DisplayTableController extends ControllerBase
         );
 
         // get data from database
-        $query = Database::getConnection('default', 'frocole')->select('Courses', 'c');
-        $query->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'LeraarUserID', 'CourseActive']);
+        $query = Database::getConnection('default', 'frocole')
+            ->select('Courses', 'c')
+            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive']);
+        
         $results = $query->execute()->fetchAll();
 
         $rows = array();
@@ -57,6 +60,7 @@ class DisplayTableController extends ControllerBase
                 'CourseName' => $data->CourseName,
                 'IPF_RD_parameters' => $data->IPF_RD_parameters,
                 'GPF_RD_parameters' => $data->GPF_RD_parameters,
+                'SegmentID' => $data->SegmentID,
                 'LeraarUserID' => $data->LeraarUserID,
                 'CourseActive' => $data->CourseActive,
 
