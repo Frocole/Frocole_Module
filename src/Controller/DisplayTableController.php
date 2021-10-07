@@ -39,9 +39,18 @@ class DisplayTableController extends ControllerBase
 
         // get data from database
         $query = Database::getConnection('default', 'frocole')
-            ->select('Courses', 'c')
-            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive']);
-        
+            ->select('Courses', 'c');
+        $query
+            ->join('Users', 'u', 'c.LeraarUserID=u.UserID');
+        $query 
+           ->join('Segments', 's', 'c.SegmentID=s.SegmentID');
+        $query
+            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive'])
+            ->fields('u', ['UserName'])
+            ->fields('s', ['SegmentName'])
+            ->orderBy('s.SegmentName','ASC')
+            ->orderBy('c.CourseID','ASC');
+
         $results = $query->execute()->fetchAll();
 
         $rows = array();
@@ -54,14 +63,18 @@ class DisplayTableController extends ControllerBase
             $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
             $linkView = Link::fromTextAndUrl(t('View'), $url_view);
 
+            //[Leraar/Segment]
+            $leraar = $data->UserName;
+            $segment = $data->SegmentName;
+
             //get data
             $rows[] = array(
                 'CourseID' => $data->CourseID,
                 'CourseName' => $data->CourseName,
                 'IPF_RD_parameters' => $data->IPF_RD_parameters,
                 'GPF_RD_parameters' => $data->GPF_RD_parameters,
-                'SegmentID' => $data->SegmentID,
-                'LeraarUserID' => $data->LeraarUserID,
+                'SegmentID' => '['.$data->SegmentID.'] '.$segment,
+                'LeraarUserID' => '['.$data->LeraarUserID.'] '.$leraar,
                 'CourseActive' => $data->CourseActive,
 
                 'view' => $linkView,

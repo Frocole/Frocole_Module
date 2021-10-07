@@ -53,7 +53,7 @@ class DisplayRecordController extends ControllerBase
         $leraarID = $data['LeraarUserID'];
         $active = $data['CourseActive'];
 
-        //[Leraar]
+        //[Leraar/Segment]
         $leraar = $data['Username'];
         $segment = $data["SegmentName"];
 
