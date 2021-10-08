@@ -43,6 +43,9 @@ class ExportController extends ControllerBase
 
                 // Reserve 5M memory for the in-memory file.
                 $csv = fopen('php://output', 'r+');
+                
+                // Specify Separator.
+                fwrite($csv, "sep=,\n");
 
                 // Get Fields.
                 $fields = $conn
