@@ -17,7 +17,7 @@ class AddForm extends FormBase
      */
     public function getFormId()
     {
-        return 'add_form';
+        return 'add_course';
     }
 
     /**
@@ -31,7 +31,7 @@ class AddForm extends FormBase
             $route->setDefault('_title', $title);
         }
 
-        $url = Url::fromRoute('frocole.display_data');
+        $url = Url::fromRoute('frocole.display_courses');
 
         $form['add'] = [
         '#type' => 'item',
@@ -271,7 +271,7 @@ class AddForm extends FormBase
                 ->addMessage($this->t('Succesfully added a new Course.', [ ]));
         }
 
-        $url = new Url('frocole.display_data');
+        $url = new Url('frocole.display_courses');
         $response = new RedirectResponse($url->toString());
         $response->send();
     }

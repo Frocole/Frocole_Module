@@ -33,7 +33,7 @@ class InfoForm extends FormBase
         }
         */
 
-        $url = Url::fromRoute('frocole.display_data');
+        $url = Url::fromRoute('frocole.display_courses');
 
         $conn = Database::getConnection('default', 'frocole');
         $data = array();
@@ -142,7 +142,7 @@ class InfoForm extends FormBase
                 ->addMessage($this->t('Succesfully added a new App Info.', [ ]));
         }
 
-        $url = new Url('frocole.display_data');
+        $url = new Url('frocole.display_courses');
         $response = new RedirectResponse($url->toString());
         $response->send();
     }

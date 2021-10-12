@@ -86,7 +86,7 @@ class DisplayRecordController extends ControllerBase
 
         $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>".$groups."</table>";
 
-        $url = Url::fromRoute('frocole.display_data');
+        $url = Url::fromRoute('frocole.display_courses');
 
         return [
         '#type' => 'markup',

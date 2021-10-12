@@ -55,9 +55,9 @@ class DisplayTableController extends ControllerBase
 
         $rows = array();
         foreach ($results as $data) {
-            $url_delete = Url::fromRoute('frocole.delete_form', ['id' => $data->CourseID], []);
-            $url_edit = Url::fromRoute('frocole.add_form', ['id' => $data->CourseID], []);
-            $url_view = Url::fromRoute('frocole.show_data', ['id' => $data->CourseID], []);
+            $url_delete = Url::fromRoute('frocole.delete_course', ['id' => $data->CourseID], []);
+            $url_edit = Url::fromRoute('frocole.add_course', ['id' => $data->CourseID], []);
+            $url_view = Url::fromRoute('frocole.show_course', ['id' => $data->CourseID], []);
 
             $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
             $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
@@ -84,7 +84,7 @@ class DisplayTableController extends ControllerBase
 
         }
 
-        $url = Url::fromRoute('frocole.add_form');
+        $url = Url::fromRoute('frocole.add_course');
 
         $form['add'] = [
           '#type' => 'item',
