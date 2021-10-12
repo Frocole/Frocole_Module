@@ -13,7 +13,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\frocole\Controller
  */
-class DisplayRecordController extends ControllerBase
+class DisplayCourseController extends ControllerBase
 {
 
     /**

@@ -7,9 +7,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Url;
 
-
 /**
- * Class DeleteForm
+ * Class DeleteSegmentForm
  *
  * @package Drupal\frocole\Form
  */

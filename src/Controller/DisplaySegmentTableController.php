@@ -8,11 +8,11 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
- * Class DisplaySegmentsTableController
+ * Class DisplaySegmentTableController
  *
  * @package Drupal\frocole\Controller
  */
-class DisplaySegmentsTableController extends ControllerBase
+class DisplaySegmentTableController extends ControllerBase
 {
     public function index()
     {

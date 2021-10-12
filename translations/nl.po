@@ -34,7 +34,7 @@ msgstr "Geen data gevonden"
 #D9 Edit
 #D9 Active
 
-# [DisplayRecordController.php]
+# [DisplayCourseController.php]
 
 msgid "Show Course"
 msgstr "Bekijk Cursus"
@@ -56,7 +56,7 @@ msgstr "Exporteer feedback naar CSC/Excel"
 
 #D9 Groups
 
-# [AddForm.php]
+# [AddCourseForm.php]
 
 #msgid "Edit Course"
 #msgstr "Wijzig Cursus"
@@ -91,7 +91,7 @@ msgstr "individuele"
 msgid "indicators"
 msgstr "indicatoren"
 
-# [DeleteForm.php]
+# [DeleteCourseForm.php]
 
 msgid "Delete it!"
 msgstr "Verwijder!"
@@ -104,3 +104,14 @@ msgstr "De Cursus met ID %id is succesvol verwijderd."
 
 msgid "Delete Course"
 msgstr "Verwijder Cursus"
+
+# [DeleteSegmentForm.php]
+
+msgid "Do you want to delete Segment with ID %id ?"
+msgstr "Wilt U de Segment met ID %id verwijderen ?"
+
+msgid "Succesfully deleted a Segment with ID %id."
+msgstr "De Segment met ID %id is succesvol verwijderd."
+
+msgid "Delete Segment"
+msgstr "Verwijder Segment"

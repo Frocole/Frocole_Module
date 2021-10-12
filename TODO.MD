@@ -1,13 +1,15 @@
 
 ----
 InfoForm, should be/have a list (with segment name)
+
+Translation new (Segment) forms
 ----
 
 ----
 Validation
 ----
 
-* AddForm.validateForm() needs some sanity checks 
+* AddCourseForm.validateForm() needs some sanity checks 
     (indicator label length)
     (empty elements)
     (problemetic characters)
@@ -36,6 +38,6 @@ Further integration.
  
 ----
 * DONE Complete translation.
-* DONE Implement validateForm() in AddForm.php
+* DONE Implement validateForm() in AddCourse.php
 * DONE Define Access on forms (restict to admin).
 * DONE Change Students List into a table (id|name)

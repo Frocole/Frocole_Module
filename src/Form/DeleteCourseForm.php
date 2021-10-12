@@ -9,11 +9,11 @@ use Drupal\Core\Url;
 
 
 /**
- * Class DeleteForm
+ * Class DeleteCourseForm
  *
  * @package Drupal\frocole\Form
  */
-class DeleteForm extends ConfirmFormBase
+class DeleteCourseForm extends ConfirmFormBase
 {
     public $id;
 
@@ -22,7 +22,7 @@ class DeleteForm extends ConfirmFormBase
      */
     public function getFormId()
     {
-        return 'delete_course';
+        return 'delete_course_form';
     }
 
     public function getQuestion()

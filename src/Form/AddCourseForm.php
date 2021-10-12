@@ -10,14 +10,14 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class AddForm extends FormBase
+class AddCourseForm extends FormBase
 {
     /**
      * {@inheritdoc}
      */
     public function getFormId()
     {
-        return 'add_course';
+        return 'add_course_form';
     }
 
     /**
