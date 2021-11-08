@@ -42,7 +42,7 @@ class AddSegmentForm extends FormBase
         $data = array();
         if (isset($_GET['id'])) {
             $query = $conn
-                ->select('Segments', 's')
+                ->select('segments', 's')
                 ->condition('SegmentID', $_GET['id'])
                 ->fields('s');
             $data = $query->execute()->fetchAssoc();
@@ -80,10 +80,10 @@ class AddSegmentForm extends FormBase
         $name = $form_state->getValue('SegmentName');
 
         $query = Database::getConnection('default', 'frocole')
-            ->select('Segments', 's')
+            ->select('segments', 's')
             ->fields('s')
             ->condition('SegmentName', $name, '=');
-            
+
         $num_rows = $query
             ->countQuery()
             ->execute()
@@ -108,14 +108,14 @@ class AddSegmentForm extends FormBase
         if (isset($_GET['id'])) {
             // update data in database
             Database::getConnection('default', 'frocole')
-                ->update('Segments')
+                ->update('segments')
                 ->fields($data)
                 ->condition('SegmentID', $_GET['id'])
                 ->execute();
         } else {
             // insert data to database
             Database::getConnection('default', 'frocole')
-                ->insert('Segments')
+                ->insert('segments')
                 ->fields($data)
                 ->execute();
         }

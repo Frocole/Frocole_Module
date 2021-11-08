@@ -27,15 +27,15 @@ class DisplayCourseController extends ControllerBase
         $conn = Database::getConnection('default', 'frocole');
 
         $query = $conn
-            ->select('Courses', 'c')
+            ->select('courses', 'c')
             ->condition('c.CourseID', $id);
 
         //see https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
         $query
-            ->join('Users', 'u', 'c.LeraarUserID=u.UserID');
-        $query 
-           ->join('Segments', 's', 'c.SegmentID=s.SegmentID');
-        
+            ->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        $query
+           ->join('segments', 's', 'c.SegmentID=s.SegmentID');
+
         $query
             ->fields('c')
             ->fields('u', ['Username'])
@@ -59,7 +59,7 @@ class DisplayCourseController extends ControllerBase
 
         //[Groups]
         $query = $conn
-            ->select('Groups', 'g')
+            ->select('groups', 'g')
             ->condition('g.CourseID', $id)
             ->fields('g');
         $data = $query
@@ -124,9 +124,9 @@ class DisplayCourseController extends ControllerBase
     {
         //[Groups]
          $query = $conn
-              ->select('UserAndGroupRelations', 'r');
+              ->select('userandgrouprelations', 'r');
 
-        $query->join('Users', 'u', 'r.UserID=u.UserID');
+        $query->join('users', 'u', 'r.UserID=u.UserID');
         $query->condition('r.GroupID', $groupID);
         $query
             ->fields('r')

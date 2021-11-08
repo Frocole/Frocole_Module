@@ -28,7 +28,7 @@ class DisplaySegmentTableController extends ControllerBase
 
         // get data from database
         $query = Database::getConnection('default', 'frocole')
-            ->select('Segments', 's');
+            ->select('segments', 's');
         $query
             ->fields('s')
             ->orderBy('s.SegmentName','ASC');
@@ -53,7 +53,7 @@ class DisplaySegmentTableController extends ControllerBase
                 //'view' => $linkView,
                 'view' => "View",
                 'delete' => $linkDelete,
-                'edit' =>  $linkEdit,            
+                'edit' =>  $linkEdit,
             );
         }
 

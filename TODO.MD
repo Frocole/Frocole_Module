@@ -1,8 +1,25 @@
+----
+Database Modification due to Segments
+
+1) Add 'Segments' table
+    SegmentID, Primary int AUTO_INCREMENT
+    SegmentName, varchar(20) utf8mb4_general_ci	
+
+2) Create one record in this table with an empty 'SegmentName' field for backwards compatibility.
+   The 'SegmentID' can be used to map existing Courses, Users and InfoTexten onto this segment.
+
+3) Add a 'SegmentID' int column to the 'Courses' table.
+    Fill existing records with the SegmentID obtained in step 2.
+4) Add a 'SegmentID' int column to the 'InfoTexten' table.
+    Fill existing records with the SegmentID obtained in step 2.
+5) Add a 'SegmentID' int column to the 'Users' table.
+    Fill existing records with the SegmentID obtained in step 2.
 
 ----
 InfoForm, should be/have a list (with segment name)
 
 Translation new (Segment) forms
+
 ----
 
 ----

@@ -46,7 +46,7 @@ class ExportController extends ControllerBase
 
                 // Get Fields.
                 $fields = $conn
-                    ->query("DESCRIBE FeedBackItems")
+                    ->query("DESCRIBE feedbackitems")
                     ->fetchAll();
 
                 $fieldnames = array();
@@ -58,7 +58,7 @@ class ExportController extends ControllerBase
 
                 // Get Data to Export.
                 $query = $conn
-                    ->select('FeedBackItems', 'f')
+                    ->select('feedbackitems', 'f')
                     ->condition('GroupID', $id)
                     ->fields('f');
                 $data = $query

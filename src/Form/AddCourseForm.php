@@ -42,7 +42,7 @@ class AddCourseForm extends FormBase
         $data = array();
         if (isset($_GET['id'])) {
             $query = $conn
-                ->select('Courses', 'm')
+                ->select('courses', 'm')
                 ->condition('CourseID', $_GET['id'])
                 ->fields('m');
             $data = $query->execute()->fetchAssoc();
@@ -211,12 +211,12 @@ class AddCourseForm extends FormBase
         $sid = $form_state->getValue('SegmentID');
         $lid = $form_state->getValue('LeraarUserID');
 
-        //SELECT u.UserID FROM `Users` u WHERE u.UserID=28 AND u.SegmentID=4
+        //SELECT u.UserID FROM `users` u WHERE u.UserID=28 AND u.SegmentID=4
 
          // [segments]m note we can only use the Users table and id's from the form as the course might not be inserted yet.
          // so check if the LeraarUser matches the Course Segment.
          $query = Database::getConnection('default', 'frocole')
-            ->select('Users', 'u')
+            ->select('users', 'u')
             ->fields('u')
             ->condition('UserID', $lid, '=')
             ->condition('SegmentID', $sid, '=');
@@ -250,14 +250,14 @@ class AddCourseForm extends FormBase
         if (isset($_GET['id'])) {
             // update data in database
             Database::getConnection('default', 'frocole')
-                ->update('Courses')
+                ->update('courses')
                 ->fields($data)
                 ->condition('CourseID', $_GET['id'])
                 ->execute();
         } else {
             // insert data to database
             Database::getConnection('default', 'frocole')
-                ->insert('Courses')
+                ->insert('courses')
                 ->fields($data)
                 ->execute();
         }
@@ -283,7 +283,7 @@ class AddCourseForm extends FormBase
     {
         // [Users]
         $query = Database::getConnection('default', 'frocole')
-            ->select('Users', 'u')
+            ->select('users', 'u')
             ->fields('u', ['UserID', 'Username', 'Nickname']);
 
         $data = $query
@@ -306,7 +306,7 @@ class AddCourseForm extends FormBase
     {
         // [segments]
         $query = Database::getConnection('default', 'frocole')
-            ->select('Segments', 's')
+            ->select('segments', 's')
             ->fields('s', ['SegmentID', 'SegmentName']);
 
         $data = $query
@@ -320,5 +320,5 @@ class AddCourseForm extends FormBase
         }
 
         return $result;
-    }    
+    }
 }

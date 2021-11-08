@@ -39,11 +39,11 @@ class DisplayCourseTableController extends ControllerBase
 
         // get data from database
         $query = Database::getConnection('default', 'frocole')
-            ->select('Courses', 'c');
+            ->select('courses', 'c');
         $query
-            ->join('Users', 'u', 'c.LeraarUserID=u.UserID');
-        $query 
-           ->join('Segments', 's', 'c.SegmentID=s.SegmentID');
+            ->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        $query
+           ->join('segments', 's', 'c.SegmentID=s.SegmentID');
         $query
             ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive'])
             ->fields('u', ['UserName'])
