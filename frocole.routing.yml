@@ -1,32 +1,32 @@
-frocole.display_data:
+frocole.display_courses:
   path: '/admin/frocole/index'
   defaults:
-    _controller: '\Drupal\frocole\Controller\DisplayTableController::index'
+    _controller: '\Drupal\frocole\Controller\DisplayCourseTableController::index'
     _title: 'All Courses'
   requirements:
     _role: 'frocole_beheerder'
 
-frocole.show_data:
+frocole.show_course_form:
   path: '/admin/frocole/{id}/show'
   defaults:
-    _controller: '\Drupal\frocole\Controller\DisplayRecordController::show'
+    _controller: '\Drupal\frocole\Controller\DisplayCourseController::show'
     _title: 'Show Course'
   requirements:
     _role: 'frocole_beheerder'
 
-frocole.delete_form:
+frocole.delete_course_form:
   path: '/admin/frocole/{id}/delete'
   defaults:
-    _form: '\Drupal\frocole\Form\DeleteForm'
+    _form: '\Drupal\frocole\Form\DeleteCourseForm'
     _title: 'Delete Course'
   requirements:
     _role: 'frocole_beheerder'
 
-frocole.add_form:
+frocole.add_course_form:
   path: '/admin/frocole/add'
   defaults:
     _title: 'Add/Edit a Course'
-    _form: '\Drupal\frocole\Form\AddForm'
+    _form: '\Drupal\frocole\Form\AddCourseForm'
   requirements:
     _role: 'frocole_beheerder'
 
@@ -46,3 +46,26 @@ frocole.export_form:
   requirements:
     _role: 'frocole_beheerder'
 
+frocole.display_segments:
+  path: '/admin/frocole/segments'
+  defaults:
+    _controller: '\Drupal\frocole\Controller\DisplaySegmentTableController::index'
+    _title: 'All Segments'
+  requirements:
+    _role: 'frocole_beheerder'
+
+frocole.add_segment_form:
+  path: '/admin/frocole/segment/add'
+  defaults:
+    _title: 'Add/Edit a Segment'
+    _form: '\Drupal\frocole\Form\AddSegmentForm'
+  requirements:
+    _role: 'frocole_beheerder'
+
+frocole.delete_segment_form:
+  path: '/admin/frocole/segment/{id}/delete'
+  defaults:
+    _form: '\Drupal\frocole\Form\DeleteSegmentForm'
+    _title: 'Delete Segment'
+  requirements:
+    _role: 'frocole_beheerder'

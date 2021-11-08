@@ -13,7 +13,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\frocole\Controller
  */
-class DisplayRecordController extends ControllerBase
+class DisplayCourseController extends ControllerBase
 {
 
     /**
@@ -27,13 +27,19 @@ class DisplayRecordController extends ControllerBase
         $conn = Database::getConnection('default', 'frocole');
 
         $query = $conn
-            ->select('Courses', 'c')
+            ->select('courses', 'c')
             ->condition('c.CourseID', $id);
 
         //see https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
-        $query->join('Users', 'u', 'c.LeraarUserID=u.UserID');
-        $query->fields('c');
-        $query->fields('u', ['Username']);
+        $query
+            ->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        $query
+           ->join('segments', 's', 'c.SegmentID=s.SegmentID');
+
+        $query
+            ->fields('c')
+            ->fields('u', ['Username'])
+            ->fields('s', ['SegmentName']);
 
         $data = $query
             ->execute()
@@ -43,15 +49,17 @@ class DisplayRecordController extends ControllerBase
         $course_name = $data['CourseName'];
         $ipf = $data['IPF_RD_parameters'];
         $gpf = $data['GPF_RD_parameters'];
+        $segmentID = $data['SegmentID'];
         $leraarID = $data['LeraarUserID'];
         $active = $data['CourseActive'];
 
-        //[Leraar]
+        //[Leraar/Segment]
         $leraar = $data['Username'];
+        $segment = $data["SegmentName"];
 
         //[Groups]
         $query = $conn
-            ->select('Groups', 'g')
+            ->select('groups', 'g')
             ->condition('g.CourseID', $id)
             ->fields('g');
         $data = $query
@@ -78,7 +86,7 @@ class DisplayRecordController extends ControllerBase
 
         $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>".$groups."</table>";
 
-        $url = Url::fromRoute('frocole.display_data');
+        $url = Url::fromRoute('frocole.display_courses');
 
         return [
         '#type' => 'markup',
@@ -89,6 +97,8 @@ class DisplayRecordController extends ControllerBase
                     <p>".$this->AxisToList($ipf)."</p>
                     <strong>GPF_RD</strong>
                     <p>".$this->AxisToList($gpf)."</p>
+                    <strong>".t('Segment')."</strong>
+                    <p>[".str_pad($segmentID, 4, '0', STR_PAD_LEFT)."]&nbsp;$segment</p>
                     <strong>".t('Teacher')."</strong>
                     <p>[".str_pad($leraarID, 4, '0', STR_PAD_LEFT)."]&nbsp;$leraar</p>
                     <strong>".t('Active')."</strong>
@@ -114,9 +124,9 @@ class DisplayRecordController extends ControllerBase
     {
         //[Groups]
          $query = $conn
-              ->select('UserAndGroupRelations', 'r');
+              ->select('userandgrouprelations', 'r');
 
-        $query->join('Users', 'u', 'r.UserID=u.UserID');
+        $query->join('users', 'u', 'r.UserID=u.UserID');
         $query->condition('r.GroupID', $groupID);
         $query
             ->fields('r')
