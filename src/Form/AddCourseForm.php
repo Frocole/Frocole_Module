@@ -10,14 +10,14 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class AddForm extends FormBase
+class AddCourseForm extends FormBase
 {
     /**
      * {@inheritdoc}
      */
     public function getFormId()
     {
-        return 'add_form';
+        return 'add_course_form';
     }
 
     /**
@@ -31,7 +31,7 @@ class AddForm extends FormBase
             $route->setDefault('_title', $title);
         }
 
-        $url = Url::fromRoute('frocole.display_data');
+        $url = Url::fromRoute('frocole.display_courses');
 
         $form['add'] = [
         '#type' => 'item',
@@ -42,7 +42,7 @@ class AddForm extends FormBase
         $data = array();
         if (isset($_GET['id'])) {
             $query = $conn
-                ->select('Courses', 'm')
+                ->select('courses', 'm')
                 ->condition('CourseID', $_GET['id'])
                 ->fields('m');
             $data = $query->execute()->fetchAssoc();
@@ -77,6 +77,15 @@ class AddForm extends FormBase
         '#default_value' => (isset($data['GPF_RD_parameters'])) ? $data['GPF_RD_parameters'] : '',
         '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12']
         ];
+
+        // Find all users and their id's.
+        $form['SegmentID'] = [
+            '#type' => 'select',
+            '#title' => $this->t('Select Segment'),
+            '#options' => $this->FetchSegments(),
+            '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
+            '#default_value' => (isset($data['SegmentID'])) ? $data['SegmentID'] : '',
+            ];
 
         // Find all users and their id's.
         $form['LeraarUserID'] = [
@@ -197,6 +206,31 @@ class AddForm extends FormBase
                 '%msg' => $this->t('Error'),
             ]));
         }
+
+        // Check if Leraar has the same SegmentID as the Course.
+        $sid = $form_state->getValue('SegmentID');
+        $lid = $form_state->getValue('LeraarUserID');
+
+        //SELECT u.UserID FROM `users` u WHERE u.UserID=28 AND u.SegmentID=4
+
+         // [segments]m note we can only use the Users table and id's from the form as the course might not be inserted yet.
+         // so check if the LeraarUser matches the Course Segment.
+         $query = Database::getConnection('default', 'frocole')
+            ->select('users', 'u')
+            ->fields('u')
+            ->condition('UserID', $lid, '=')
+            ->condition('SegmentID', $sid, '=');
+
+        $num_rows = $query
+            ->countQuery()
+            ->execute()
+            ->fetchField();
+
+        if ($num_rows == 0) {
+            $form_state->setErrorByName('Segments', $this->t('%msg: The Leraar\'s segment does not match the Course\'s segment.', [
+                '%msg' => $this->t('Error'),
+            ]));
+        }
     }
 
     /**
@@ -208,6 +242,7 @@ class AddForm extends FormBase
             'CourseName' => $form_state->getValue('CourseName'),
             'IPF_RD_parameters' => $form_state->getValue('IPF_RD_parameters'),
             'GPF_RD_parameters' => $form_state->getValue('GPF_RD_parameters'),
+            'SegmentID' => $form_state->getValue('SegmentID'),
             'LeraarUserID' => $form_state->getValue('LeraarUserID'),
             'CourseActive' => $form_state->getValue('CourseActive'),
         );
@@ -215,14 +250,14 @@ class AddForm extends FormBase
         if (isset($_GET['id'])) {
             // update data in database
             Database::getConnection('default', 'frocole')
-                ->update('Courses')
+                ->update('courses')
                 ->fields($data)
                 ->condition('CourseID', $_GET['id'])
                 ->execute();
         } else {
             // insert data to database
             Database::getConnection('default', 'frocole')
-                ->insert('Courses')
+                ->insert('courses')
                 ->fields($data)
                 ->execute();
         }
@@ -236,19 +271,19 @@ class AddForm extends FormBase
                 ->addMessage($this->t('Succesfully added a new Course.', [ ]));
         }
 
-        $url = new Url('frocole.display_data');
+        $url = new Url('frocole.display_courses');
         $response = new RedirectResponse($url->toString());
         $response->send();
     }
 
     /**
-     * @return an associated array of user'is, their names and nicknames.
+     * @return an associated array of user's, their names and nicknames.
      */
     private function FetchUsers()
     {
         // [Users]
         $query = Database::getConnection('default', 'frocole')
-            ->select('Users', 'u')
+            ->select('users', 'u')
             ->fields('u', ['UserID', 'Username', 'Nickname']);
 
         $data = $query
@@ -259,6 +294,29 @@ class AddForm extends FormBase
         foreach ($data as $record) {
             // Do something with each $record
             $result[$record['UserID']] = "[".str_pad($record['UserID'], 4, '0', STR_PAD_LEFT)."] ".$record['Username']." (".$record['Nickname'].")";
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return an associated array of segments, their names.
+     */
+    private function FetchSegments()
+    {
+        // [segments]
+        $query = Database::getConnection('default', 'frocole')
+            ->select('segments', 's')
+            ->fields('s', ['SegmentID', 'SegmentName']);
+
+        $data = $query
+            ->execute()
+            ->fetchAllAssoc('SegmentID', \PDO::FETCH_ASSOC);
+
+        $result = array();
+        foreach ($data as $record) {
+            // Do something with each $record
+            $result[$record['SegmentID']] = $record['SegmentName'];
         }
 
         return $result;

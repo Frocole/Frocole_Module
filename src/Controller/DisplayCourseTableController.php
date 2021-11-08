@@ -8,11 +8,11 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
- * Class DisplayTableController
+ * Class DisplayCourseTableController
  *
  * @package Drupal\frocole\Controller
  */
-class DisplayTableController extends ControllerBase
+class DisplayCourseTableController extends ControllerBase
 {
     public function index()
     {
@@ -28,6 +28,7 @@ class DisplayTableController extends ControllerBase
             'CourseName' => t('Course Name'),
             'IPF_RD_parameters' => t('Individual Performance'),
             'GPF_RD_parameters' => t('Group Performance'),
+            'SegmentID' => t('Segment'),
             'LeraarUserID' => t('Teacher'),
             'CourseActive' => t('Active'),
 
@@ -37,19 +38,34 @@ class DisplayTableController extends ControllerBase
         );
 
         // get data from database
-        $query = Database::getConnection('default', 'frocole')->select('Courses', 'c');
-        $query->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'LeraarUserID', 'CourseActive']);
+        $query = Database::getConnection('default', 'frocole')
+            ->select('courses', 'c');
+        $query
+            ->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        $query
+           ->join('segments', 's', 'c.SegmentID=s.SegmentID');
+        $query
+            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive'])
+            ->fields('u', ['UserName'])
+            ->fields('s', ['SegmentName'])
+            ->orderBy('s.SegmentName','ASC')
+            ->orderBy('c.CourseID','ASC');
+
         $results = $query->execute()->fetchAll();
 
         $rows = array();
         foreach ($results as $data) {
-            $url_delete = Url::fromRoute('frocole.delete_form', ['id' => $data->CourseID], []);
-            $url_edit = Url::fromRoute('frocole.add_form', ['id' => $data->CourseID], []);
-            $url_view = Url::fromRoute('frocole.show_data', ['id' => $data->CourseID], []);
+            $url_delete = Url::fromRoute('frocole.delete_course_form', ['id' => $data->CourseID], []);
+            $url_edit = Url::fromRoute('frocole.add_course_form', ['id' => $data->CourseID], []);
+            $url_view = Url::fromRoute('frocole.show_course_form', ['id' => $data->CourseID], []);
 
             $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
             $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
             $linkView = Link::fromTextAndUrl(t('View'), $url_view);
+
+            //[Leraar/Segment]
+            $leraar = $data->UserName;
+            $segment = $data->SegmentName;
 
             //get data
             $rows[] = array(
@@ -57,7 +73,8 @@ class DisplayTableController extends ControllerBase
                 'CourseName' => $data->CourseName,
                 'IPF_RD_parameters' => $data->IPF_RD_parameters,
                 'GPF_RD_parameters' => $data->GPF_RD_parameters,
-                'LeraarUserID' => $data->LeraarUserID,
+                'SegmentID' => '['.$data->SegmentID.'] '.$segment,
+                'LeraarUserID' => '['.$data->LeraarUserID.'] '.$leraar,
                 'CourseActive' => $data->CourseActive,
 
                 'view' => $linkView,
@@ -67,7 +84,7 @@ class DisplayTableController extends ControllerBase
 
         }
 
-        $url = Url::fromRoute('frocole.add_form');
+        $url = Url::fromRoute('frocole.add_course_form');
 
         $form['add'] = [
           '#type' => 'item',
