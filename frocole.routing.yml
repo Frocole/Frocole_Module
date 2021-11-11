@@ -1,11 +1,13 @@
+# Courses
 frocole.display_courses:
   path: '/admin/frocole/index'
   defaults:
     _controller: '\Drupal\frocole\Controller\DisplayCourseTableController::index'
-    _title: 'All Courses'
+    _title: 'Manage Courses'
   requirements:
     _role: 'frocole_beheerder'
 
+# Course
 frocole.show_course_form:
   path: '/admin/frocole/{id}/show'
   defaults:
@@ -30,14 +32,7 @@ frocole.add_course_form:
   requirements:
     _role: 'frocole_beheerder'
 
-frocole.info_form:
-  path: '/admin/frocole/info'
-  defaults:
-    _title: 'Change Additional App Info'
-    _form: '\Drupal\frocole\Form\InfoForm'
-  requirements:
-    _role: 'frocole_beheerder'
-
+#Export
 frocole.export_form:
   path: '/admin/frocole/{id}/export'
   defaults:
@@ -46,11 +41,42 @@ frocole.export_form:
   requirements:
     _role: 'frocole_beheerder'
 
+# Info Texten
+frocole.display_infos:
+  path: '/admin/frocole/infos'
+  defaults:
+    _controller: '\Drupal\frocole\Controller\DisplayInfoTableController::index'
+    _title: 'Manage Additional Info Texts'
+  requirements:
+    _role: 'frocole_beheerder'
+
+frocole.info_form:
+  path: '/admin/frocole/info'
+  defaults:
+    _title: 'Add/Edit Additional App Info'
+    _form: '\Drupal\frocole\Form\InfoForm'
+  requirements:
+    _role: 'frocole_beheerder'
+
+frocole.add_info_form:
+  path: '/admin/frocole/info/add'
+  requirements:
+    _role: 'frocole_beheerder'
+
+frocole.delete_info_form:
+  path: '/admin/frocole/info/{id}/delete'
+  defaults:
+    _form: '\Drupal\frocole\Form\DeleteInfoForm'
+    _title: 'Delete Info'
+  requirements:
+    _role: 'frocole_beheerder'
+
+# Segments
 frocole.display_segments:
   path: '/admin/frocole/segments'
   defaults:
     _controller: '\Drupal\frocole\Controller\DisplaySegmentTableController::index'
-    _title: 'All Segments'
+    _title: 'Manage Segments'
   requirements:
     _role: 'frocole_beheerder'
 

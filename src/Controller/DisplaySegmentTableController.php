@@ -21,9 +21,10 @@ class DisplaySegmentTableController extends ControllerBase
             'SegmentID' => t('Segment ID'),
             'Segment Name' => t('Segment Name'),
 
-            'view' => t('View'),
+            // 'view' => t('View'),
             'delete' => t('Delete'),
             'edit' => t('Edit'),
+            'info' => t('Info'),
         );
 
         // get data from database
@@ -39,11 +40,13 @@ class DisplaySegmentTableController extends ControllerBase
         foreach ($results as $data) {
             //$url_view = Url::fromRoute('frocole.show_course', ['id' => $data->SegmentID], []);
             $url_delete = Url::fromRoute('frocole.delete_segment_form', ['id' => $data->SegmentID], []);
-            $url_edit = Url::fromRoute('frocole.add_segment_form', ['id' => $data->SegmentID], []);
+            $url_edit   = Url::fromRoute('frocole.add_segment_form', ['id' => $data->SegmentID], []);
+            $url_info   = Url::fromRoute('frocole.info_form', ['sid' => $data->SegmentID], []);
 
             //$linkView = Link::fromTextAndUrl(t('View'), $url_view);
             $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
-            $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
+            $linkEdit   = Link::fromTextAndUrl(t('Edit'), $url_edit);
+            $linkInfo   = Link::fromTextAndUrl(t('Info'), $url_info);
 
             //get data
             $rows[] = array(
@@ -51,25 +54,28 @@ class DisplaySegmentTableController extends ControllerBase
                 'SegmentName' => (empty($data->SegmentName)?"<empty>":$data->SegmentName),
 
                 //'view' => $linkView,
-                'view' => "View",
+                // 'view'   => "View",
                 'delete' => $linkDelete,
-                'edit' =>  $linkEdit,
+                'edit'   =>  $linkEdit,
+                'info'   => $linkInfo,
             );
         }
 
-        $url = Url::fromRoute('frocole.add_segment_form');
-
-        $form['add'] = [
+        $form['links'] = [
           '#type' => 'item',
-          '#markup' => '<a href="'.$url->toString().'">'.t('Add a new Segment').'</a>',
+          '#markup' => 
+          '<a href="'.Url::fromRoute('frocole.display_courses')->toString().'">'.t('Manage Courses').'</a> | ' . 
+          t('Manage Segments').' | '. 
+          '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Info').'</a> | ' .
+          '<a href="'.Url::fromRoute('frocole.add_segment_form')->toString().'">'.t('Add a new Segment').'</a>',
         ];
 
         // render table
         $form['table'] = [
-        '#type' => 'table',
-        '#header' => $header_table,
-        '#rows' => $rows,
-        '#empty' => t('No data found'),
+          '#type' => 'table',
+          '#header' => $header_table,
+          '#rows' => $rows,
+          '#empty' => t('No data found'),
         ];
 
         return $form;

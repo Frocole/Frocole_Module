@@ -1,9 +1,15 @@
 ----
+TODO
+
+        Translation new (Segment) forms
+
+----
+
 Database Modification due to Segments
 
 1) Add 'Segments' table
     SegmentID, Primary int AUTO_INCREMENT
-    SegmentName, varchar(20) utf8mb4_general_ci	
+    SegmentName, varchar(20) utf8mb4_general_ci
 
 2) Create one record in this table with an empty 'SegmentName' field for backwards compatibility.
    The 'SegmentID' can be used to map existing Courses, Users and InfoTexten onto this segment.
@@ -16,28 +22,14 @@ Database Modification due to Segments
     Fill existing records with the SegmentID obtained in step 2.
 
 ----
-InfoForm, should be/have a list (with segment name)
-
-Translation new (Segment) forms
-
-----
-
-----
 Validation
 ----
 
-* AddCourseForm.validateForm() needs some sanity checks 
+* AddCourseForm.validateForm() needs some sanity checks
     (indicator label length)
     (empty elements)
     (problemetic characters)
     (correct issues as a trailing / before saving)
-
-----
-Multiple Clients
-----
-
-* Support multiple databases to separate clients?
-* How to cope with it in the services?
 
 ----
 More Management UI
@@ -46,13 +38,8 @@ More Management UI
 * Add UI for managing users (move people of of a group)?
 * Make sure teacher selection scales well (be able to mark them as teacher (and default to false) ?)
 * Add Remove User from Group link to Users table.
+* Add password generation code (reset passwords).
 
-----
-Further integration.
-----
-
-* Integrate services into the module (but how about multiple databases then) ?
- 
 ----
 * DONE Complete translation.
 * DONE Implement validateForm() in AddCourse.php

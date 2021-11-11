@@ -35,7 +35,7 @@ class AddCourseForm extends FormBase
 
         $form['add'] = [
         '#type' => 'item',
-        '#markup' => '<a href="'.$url->toString().'">'.t('View All Courses').'</a>',
+        '#markup' => '<a href="'.$url->toString().'">'.t('Manage Courses').'</a>',
         ];
 
         $conn = Database::getConnection('default', 'frocole');

@@ -91,7 +91,7 @@ class DisplayCourseController extends ControllerBase
         return [
         '#type' => 'markup',
         '#markup' =>
-                    "<a href='".$url->toString()."'>".t('View All Courses')."</a>
+                    "<a href='".$url->toString()."'>".t('Manage Courses')."</a>
                     <h1>$course_name</h1><br>
                     <strong>IPF_RD</strong>
                     <p>".$this->AxisToList($ipf)."</p>

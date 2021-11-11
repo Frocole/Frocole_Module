@@ -25,22 +25,17 @@ class InfoForm extends FormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state)
     {
-        /*
+        $ro = false;
+
+        $sid = $_GET['sid'];
+
+        $data = $this->FetchInfo($sid);
+
         $request = \Drupal::request();
         if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
-            $title = 'Edit App Info';
+            $title = isset($_GET['id']) ? 'Edit Additional App Info' : 'Add Additional App Info';
             $route->setDefault('_title', $title);
         }
-        */
-
-        $url = Url::fromRoute('frocole.display_courses');
-
-        $conn = Database::getConnection('default', 'frocole');
-        $data = array();
-        $query = $conn
-            ->select('infotexten', 'i')
-            ->fields('i');
-        $data = $query->execute()->fetchAssoc();
 
         // See https://api.drupal.org/api/drupal/elements/8.2.x
 
@@ -48,6 +43,16 @@ class InfoForm extends FormBase
 
         $text = str_replace("\\r", "\r", $text);
         $text = str_replace("\\n", "\n", $text);
+
+        // Find all segments and their id's.
+        $form['SegmentID'] = [
+            '#type' => 'select',
+            '#title' => $this->t('Select Segment'),
+            '#options' => $this->FetchSegments(),
+            '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
+            '#disabled' => isset($sid),
+            '#default_value' => (isset($sid)) ? $this->FetchSegmentName($sid) : '',
+            ];
 
         $form['info'] = [
           '#type' => 'textarea',
@@ -110,28 +115,25 @@ class InfoForm extends FormBase
         //$text = str_replace("\n", "\\n", $text);
 
         $data = array(
-            'infoid' => 1,
+            //'infoid' => $form_state->getValue('SegmentID'),
             'infotext' => $text,
+            'SegmentID' => $form_state->getValue('SegmentID')['SegmentID'],
         );
 
         // Fetch existing record (if any) to see if we need to insert or update.
-        $conn = Database::getConnection('default', 'frocole');
-        $orgdata = array();
-        $query = $conn
-            ->select('infotexten', 'i')
-            ->fields('i');
-        $orgdata = $query->execute()->fetchAssoc();
+        $orgdata = $this->FetchInfo($form_state->getValue('SegmentID')['SegmentID']);
 
         // See https://api.drupal.org/api/drupal/elements/8.2.x
 
-        if (isset($orgdata['infotext'])) {
+        if (isset($orgdata)) {
             // update data in database
             Database::getConnection('default', 'frocole')
                 ->update('infotexten')
                 ->fields($data)
+                ->condition('infoid', $orgdata['infoid'])
                 ->execute();
             \Drupal::messenger()
-                ->addMessage($this->t('Succesfully edited an App Info with ID %infoid.', [ '%infoid' => $data['infoid']]));
+                ->addMessage($this->t('Succesfully edited an Additional Info with ID %infoid.', [ '%infoid' => $data['infoid']]));
         } else {
             // insert data to database
             Database::getConnection('default', 'frocole')
@@ -139,11 +141,87 @@ class InfoForm extends FormBase
                 ->fields($data)
                 ->execute();
             \Drupal::messenger()
-                ->addMessage($this->t('Succesfully added a new App Info.', [ ]));
+                ->addMessage($this->t('Succesfully added a new Additional Info.', [ ]));
         }
 
-        $url = new Url('frocole.display_courses');
+        $url = new Url('frocole.display_segments');
         $response = new RedirectResponse($url->toString());
         $response->send();
+    }
+
+    /**
+     * @return an associated array of segments, their names.
+     */
+    private function FetchSegments()
+    {
+        // [segments]
+        $query = Database::getConnection('default', 'frocole')
+            ->select('segments', 's')
+            ->fields('s', ['SegmentID', 'SegmentName']);
+
+        $data = $query
+            ->execute()
+            ->fetchAllAssoc('SegmentID', \PDO::FETCH_ASSOC);
+
+        $result = array();
+        foreach ($data as $record) {
+            // Do something with each $record
+            $result[$record['SegmentID']] = $record['SegmentName'];
+        }
+
+        return $result;
+    }
+
+    private function FetchSegmentName($sid)
+    {
+        // [segments]
+        $query = Database::getConnection('default', 'frocole')
+            ->select('segments', 's')
+            ->fields('s');
+
+        $data = $query
+            ->execute()
+            ->fetchAllAssoc('SegmentID', \PDO::FETCH_ASSOC);
+
+        foreach ($data as $record) {
+            if ($record['SegmentID']==$sid) {
+              return $record;
+            }
+        }
+
+        return null;
+    }
+
+    private function FetchInfo($sid)
+    {
+        // [segments]
+        $query = Database::getConnection('default', 'frocole')
+            ->select('infotexten', 'i')
+            ->fields('i');
+
+        $data = $query
+            ->execute()
+            ->fetchAllAssoc('SegmentID', \PDO::FETCH_ASSOC);
+
+        foreach ($data as $record) {
+            if ($record['SegmentID']==$sid) {
+              return $record;
+            }
+        }
+
+        return null;
+    }
+
+    private function InsertInfo($sid, $infotext) {
+        $data = array(
+            'SegmentID' => $sid,
+            'infotext' => $infotext,
+        );
+
+        // insert data to database
+        Database::getConnection('default', 'frocole')
+            ->insert('infotexten')
+            ->fields($data)
+            ->execute();
     }
 }

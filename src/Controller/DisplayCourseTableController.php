@@ -55,13 +55,13 @@ class DisplayCourseTableController extends ControllerBase
 
         $rows = array();
         foreach ($results as $data) {
+            $url_view   = Url::fromRoute('frocole.show_course_form', ['id' => $data->CourseID], []);
             $url_delete = Url::fromRoute('frocole.delete_course_form', ['id' => $data->CourseID], []);
-            $url_edit = Url::fromRoute('frocole.add_course_form', ['id' => $data->CourseID], []);
-            $url_view = Url::fromRoute('frocole.show_course_form', ['id' => $data->CourseID], []);
+            $url_edit   = Url::fromRoute('frocole.add_course_form', ['id' => $data->CourseID], []);
 
+            $linkView   = Link::fromTextAndUrl(t('View'), $url_view);
             $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
-            $linkEdit = Link::fromTextAndUrl(t('Edit'), $url_edit);
-            $linkView = Link::fromTextAndUrl(t('View'), $url_view);
+            $linkEdit   = Link::fromTextAndUrl(t('Edit'), $url_edit);
 
             //[Leraar/Segment]
             $leraar = $data->UserName;
@@ -84,12 +84,14 @@ class DisplayCourseTableController extends ControllerBase
 
         }
 
-        $url = Url::fromRoute('frocole.add_course_form');
-
-        $form['add'] = [
-          '#type' => 'item',
-          '#markup' => '<a href="'.$url->toString().'">'.t('Add a new Course').'</a>',
-        ];
+        $form['links'] = [
+            '#type' => 'item',
+            '#markup' => 
+            t('Manage Courses').' | '. 
+            '<a href="'.Url::fromRoute('frocole.display_segments')->toString().'">'.t('Manage Segments').'</a> | '. 
+            '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Info').'</a> | '.
+            '<a href="'.Url::fromRoute('frocole.add_course_form')->toString().'">'.t('Add a new Course').'</a>',
+          ];
 
         // render table
         $form['table'] = [
