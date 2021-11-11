@@ -35,7 +35,7 @@ class AddSegmentForm extends FormBase
 
         $form['add'] = [
         '#type' => 'item',
-        '#markup' => '<a href="'.$url->toString().'">'.t('View All Segments').'</a>',
+        '#markup' => '<a href="'.$url->toString().'">'.t('Manage Segments').'</a>',
         ];
 
         $conn = Database::getConnection('default', 'frocole');

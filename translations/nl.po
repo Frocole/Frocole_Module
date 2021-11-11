@@ -42,7 +42,7 @@ msgstr "Bekijk Cursus"
 msgid "Add a new Course"
 msgstr "Voeg nieuwe Cursus toe"
 
-msgid "View All Courses"
+msgid "Manage Courses"
 msgstr "Bekijk alle Cursussen"
 
 msgid "No Groups"
