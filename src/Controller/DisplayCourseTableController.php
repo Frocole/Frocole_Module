@@ -50,7 +50,7 @@ class DisplayCourseTableController extends ControllerBase
             ->fields('s', ['SegmentName'])
             ->orderBy('s.SegmentName','ASC')
             ->orderBy('c.CourseID','ASC');
-
+        
         $results = $query->execute()->fetchAll();
 
         $rows = array();

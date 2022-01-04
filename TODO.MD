@@ -3,6 +3,9 @@ TODO
 
         Translation new (Segment) forms
 
+        When deleting a Course (and it's teacher), other courses with that same teacher will fail to showup.
+        So not delete teachers?
+        
 ----
 
 Database Modification due to Segments
