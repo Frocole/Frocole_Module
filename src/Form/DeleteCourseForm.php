@@ -90,13 +90,13 @@ class DeleteCourseForm extends ConfirmFormBase
 
         //! [teacher id's]
         $query = $connection
-            ->select('Courses', 'c');
+            ->select('courses', 'c');
         $query
             ->addField('c','LeraarUserID');
         $teachers = $query
             ->execute()
             ->fetchAll();
-      
+
         $teacherIDs = array();
         foreach ($teachers as $teacher)
         {
@@ -105,7 +105,7 @@ class DeleteCourseForm extends ConfirmFormBase
 
         //! [groups]
         $query = $connection
-            ->select('Groups', 'g')
+            ->select('groups', 'g')
             ->condition('g.CourseID', $this->id)
             ->fields('g');
         $groups = $query
@@ -159,7 +159,7 @@ class DeleteCourseForm extends ConfirmFormBase
             ->delete('groups')
             ->condition('CourseID', $this->id)
             ->execute();
-            
+
         //! [userandcourserelations]
         $connection
             ->delete('userandcourserelations')
