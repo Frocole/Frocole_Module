@@ -50,16 +50,11 @@ frocole.display_infos:
   requirements:
     _role: 'frocole_beheerder'
 
-frocole.info_form:
-  path: '/admin/frocole/info'
-  defaults:
-    _title: 'Add/Edit Additional App Info'
-    _form: '\Drupal\frocole\Form\InfoForm'
-  requirements:
-    _role: 'frocole_beheerder'
-
 frocole.add_info_form:
   path: '/admin/frocole/info/add'
+  defaults:
+    _title: 'Add/Edit Additional App Info'
+    _form: '\Drupal\frocole\Form\AddInfoForm'
   requirements:
     _role: 'frocole_beheerder'
 

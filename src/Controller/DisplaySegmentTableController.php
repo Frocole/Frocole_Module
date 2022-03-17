@@ -41,7 +41,7 @@ class DisplaySegmentTableController extends ControllerBase
             //$url_view = Url::fromRoute('frocole.show_course', ['id' => $data->SegmentID], []);
             $url_delete = Url::fromRoute('frocole.delete_segment_form', ['id' => $data->SegmentID], []);
             $url_edit   = Url::fromRoute('frocole.add_segment_form', ['id' => $data->SegmentID], []);
-            $url_info   = Url::fromRoute('frocole.info_form', ['sid' => $data->SegmentID], []);
+            $url_info   = Url::fromRoute('frocole.add_info_form', ['sid' => $data->SegmentID], []);
 
             //$linkView = Link::fromTextAndUrl(t('View'), $url_view);
             $linkDelete = Link::fromTextAndUrl(t('Delete'), $url_delete);
@@ -63,10 +63,10 @@ class DisplaySegmentTableController extends ControllerBase
 
         $form['links'] = [
           '#type' => 'item',
-          '#markup' => 
-          '<a href="'.Url::fromRoute('frocole.display_courses')->toString().'">'.t('Manage Courses').'</a> | ' . 
-          t('Manage Segments').' | '. 
-          '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Info').'</a> | ' .
+          '#markup' =>
+          '<a href="'.Url::fromRoute('frocole.display_courses')->toString().'">'.t('Manage Courses').'</a> | ' .
+          t('Manage Segments').' | '.
+          '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Infos').'</a> | ' .
           '<a href="'.Url::fromRoute('frocole.add_segment_form')->toString().'">'.t('Add a new Segment').'</a>',
         ];
 

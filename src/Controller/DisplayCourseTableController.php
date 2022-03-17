@@ -31,6 +31,7 @@ class DisplayCourseTableController extends ControllerBase
             'SegmentID' => t('Segment'),
             'LeraarUserID' => t('Teacher'),
             'CourseActive' => t('Active'),
+            'Deadline' => t('Deadline'),
 
             'view' => t('View'),
             'delete' => t('Delete'),
@@ -45,12 +46,12 @@ class DisplayCourseTableController extends ControllerBase
         $query
            ->join('segments', 's', 'c.SegmentID=s.SegmentID');
         $query
-            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive'])
+            ->fields('c', ['CourseID', 'CourseName', 'IPF_RD_parameters', 'GPF_RD_parameters', 'SegmentID', 'LeraarUserID', 'CourseActive', 'Deadline'])
             ->fields('u', ['UserName'])
             ->fields('s', ['SegmentName'])
             ->orderBy('s.SegmentName','ASC')
             ->orderBy('c.CourseID','ASC');
-        
+
         $results = $query->execute()->fetchAll();
 
         $rows = array();
@@ -76,7 +77,8 @@ class DisplayCourseTableController extends ControllerBase
                 'SegmentID' => '['.$data->SegmentID.'] '.$segment,
                 'LeraarUserID' => '['.$data->LeraarUserID.'] '.$leraar,
                 'CourseActive' => $data->CourseActive,
-
+                'Deadline' => $data->Deadline,
+                
                 'view' => $linkView,
                 'delete' => $linkDelete,
                 'edit' =>  $linkEdit,
@@ -86,10 +88,10 @@ class DisplayCourseTableController extends ControllerBase
 
         $form['links'] = [
             '#type' => 'item',
-            '#markup' => 
-            t('Manage Courses').' | '. 
-            '<a href="'.Url::fromRoute('frocole.display_segments')->toString().'">'.t('Manage Segments').'</a> | '. 
-            '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Info').'</a> | '.
+            '#markup' =>
+            t('Manage Courses').' | '.
+            '<a href="'.Url::fromRoute('frocole.display_segments')->toString().'">'.t('Manage Segments').'</a> | '.
+            '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Infos').'</a> | '.
             '<a href="'.Url::fromRoute('frocole.add_course_form')->toString().'">'.t('Add a new Course').'</a>',
           ];
 
