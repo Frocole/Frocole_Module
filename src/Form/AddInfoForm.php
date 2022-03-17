@@ -10,14 +10,14 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class InfoForm extends FormBase
+class AddInfoForm extends FormBase
 {
     /**
      * {@inheritdoc}
      */
     public function getFormId()
     {
-        return 'info_form';
+        return 'add_info_form';
     }
 
     /**
@@ -33,7 +33,7 @@ class InfoForm extends FormBase
 
         $request = \Drupal::request();
         if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
-            $title = isset($_GET['id']) ? 'Edit Additional App Info' : 'Add Additional App Info';
+            $title = isset($_GET['sid']) ? 'Edit Additional App Info' : 'Add Additional App Info';
             $route->setDefault('_title', $title);
         }
 
@@ -43,6 +43,16 @@ class InfoForm extends FormBase
 
         $text = str_replace("\\r", "\r", $text);
         $text = str_replace("\\n", "\n", $text);
+
+        $url = Url::fromRoute('frocole.display_segments');
+
+        $form['links'] = [
+        '#type' => 'item',
+        '#markup' =>
+            '<a href="'.Url::fromRoute('frocole.display_courses')->toString().'">'.t('Manage Courses').'</a> | ' .
+            '<a href="'.$url->toString().'">'.t('Manage Segments').'</a> | ' .
+            '<a href="'.Url::fromRoute('frocole.display_infos')->toString().'">'.t('Manage Additional Info').'</a>',
+        ];
 
         // Find all segments and their id's.
         $form['SegmentID'] = [
