@@ -104,7 +104,6 @@ class DisplayCourseController extends ControllerBase
                     <strong>".t('Active')."</strong>
                     <p>$active</p>
                     <strong>".t('Groups')."</strong>
-                    <hr>
                     <p>$groups</p>"
         ];
     }
@@ -114,7 +113,21 @@ class DisplayCourseController extends ControllerBase
      */
     private function AxisToList($pf)
     {
-        return "<ul><li>".str_replace('/', '<li>', $pf)."</ul>";
+        // return "<ul><li>".str_replace('/', '<li>', $pf)."</ul>";
+        // return "<table style='width:320px; margin-bottom:0px;'>".
+        //         "<tr style='padding-top:0px; height:10px'>".
+        //         "<td style='height:20px; padding-top:0px; width:10%'>".str_replace('/', "</td><td style='height:20px; padding:0px; width:10%'>", $pf)."</td>".
+        //         "</tr>".
+        //         "</table>";
+        return "<table>".
+                 "<tr>".
+                 "<td>|</td>".
+                 "<td>".str_replace('/', "</td><td>|</td><td>", $pf)."</td>".
+                 "<td>|</td>".
+                 "</tr>".
+                 "</table>";
+
+        // return str_replace('/', '&nbsp;|&nbsp;', $pf);
     }
 
     /**
