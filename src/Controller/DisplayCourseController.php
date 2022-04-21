@@ -2,6 +2,16 @@
 
 namespace Drupal\frocole\Controller;
 
+/**
+ * A route for displaying a course.
+ *
+ * @category View
+ * @package  Drupal\frocole\Controller
+ * @author   Wim van der Vegt <wim.vandervegt@ou.nl>
+ * @license  https://github.com/Frocole/Frocole_Module/blob/develop/LICENSE.MD GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+ * @link     https://github.com/Frocole/Frocole_Module the Frocole Repository.
+ */ 
+
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Link;
@@ -9,20 +19,29 @@ use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 
 /**
- * Class DisplayRecordController
+ * Show a Course.
  *
- * @package Drupal\frocole\Controller
+ * @category Displaycontroller
+ * @package  Drupal\frocole\Controller
+ * @author   Wim van der Vegt <wim.vandervegt@ou.nl>
+ * @license  https://github.com/Frocole/Frocole_Module/blob/develop/LICENSE.MD GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+ * @link     https://github.com/Frocole/Frocole_Module the Frocole Repository.
  */
 class DisplayCourseController extends ControllerBase
 {
-
     /**
-     * @return array
+     * Show a Course.
+     *
+     * @param int $id
+     *   the Course ID.
+     *
+     * @return form
+     *   the form of courses to be rendered as a table.
      */
     public function show($id)
     {
-        // see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Database%21Database.php/function/Database%3A%3AgetConnection/8.9.x
-        // see https://api.drupal.org/api/drupal/core%21lib%21Drupal.php/function/Drupal%3A%3Adatabase/8.2.x
+        // See https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Database%21Database.php/function/Database%3A%3AgetConnection/8.9.x
+        // See https://api.drupal.org/api/drupal/core%21lib%21Drupal.php/function/Drupal%3A%3Adatabase/8.2.x
 
         $conn = Database::getConnection('default', 'frocole');
 
@@ -30,11 +49,11 @@ class DisplayCourseController extends ControllerBase
             ->select('courses', 'c')
             ->condition('c.CourseID', $id);
 
-        //see https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
+        // See https://www.drupal.org/docs/8/api/database-api/dynamic-queries/joins
         $query
-            ->join('users', 'u', 'c.LeraarUserID=u.UserID');
+        ->join('users', 'u', 'c.LeraarUserID=u.UserID');
         $query
-           ->join('segments', 's', 'c.SegmentID=s.SegmentID');
+        ->join('segments', 's', 'c.SegmentID=s.SegmentID');
 
         $query
             ->fields('c')
@@ -45,7 +64,7 @@ class DisplayCourseController extends ControllerBase
             ->execute()
             ->fetchAssoc();
 
-        //[Courses]
+        // [Courses]
         $course_name = $data['CourseName'];
         $ipf = $data['IPF_RD_parameters'];
         $gpf = $data['GPF_RD_parameters'];
@@ -53,11 +72,11 @@ class DisplayCourseController extends ControllerBase
         $leraarID = $data['LeraarUserID'];
         $active = $data['CourseActive'];
 
-        //[Leraar/Segment]
+        // [Leraar/Segment]
         $leraar = $data['Username'];
         $segment = $data["SegmentName"];
 
-        //[Groups]
+        // [Groups]
         $query = $conn
             ->select('groups', 'g')
             ->condition('g.CourseID', $id)
@@ -66,78 +85,73 @@ class DisplayCourseController extends ControllerBase
             ->execute()
             ->fetchAllAssoc('GroupID', \PDO::FETCH_ASSOC);
 
-        //[Groups]
+        // [Groups]
         $groups = "";
 
         foreach ($data as $record) {
-            // Do something with each $record
+            // Do something with each $record.
             $groupID = $record['GroupID'];
             $group = $record['GroupNickname'];
 
             $export_url = Url::fromRoute('frocole.export_form', ['id' => $groupID], []);
 
-            $groups .= '<tr><td>[<a href="'.$export_url->toString().'" title="'.t('Export feedback to CSV/Excel').'">'.str_pad($groupID, 4, '0', STR_PAD_LEFT).'</a>]</td><td>'.$group.'</td><td>'.$this->FetchGroupUsers($conn, $groupID).'</td></tr>';
-            //$groups .= $this->FetchGroupUsers($conn, $groupID);
+            $groups .= '<tr><td>[<a href="' . $export_url->toString() . '" title="' . t('Export feedback to CSV/Excel') . '">' . str_pad($groupID, 4, '0', STR_PAD_LEFT) . '</a>]</td><td>' . $group . '</td><td>' . $this->fetchGroupUsers($conn, $groupID) . '</td></tr>';
+            // $groups .= $this->fetchGroupUsers($conn, $groupID);
         }
 
         if (strlen($groups) === 0) {
-            $groups = "<li><i>".t('No Groups')."</i>";
+            $groups = "<li><i>" . t('No Groups') . "</i>";
         }
 
-        $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>".$groups."</table>";
+        $groups = "<table><tr><th>GroupID</th><th>Group Nickname</th><th>Users</th></tr>" . $groups . "</table>";
 
         $url = Url::fromRoute('frocole.display_courses');
 
         return [
         '#type' => 'markup',
         '#markup' =>
-                    "<a href='".$url->toString()."'>".t('Manage Courses')."</a>
-                    <h1>$course_name</h1><br>
-                    <strong>IPF_RD</strong>
-                    <p>".$this->AxisToList($ipf)."</p>
-                    <strong>GPF_RD</strong>
-                    <p>".$this->AxisToList($gpf)."</p>
-                    <strong>".t('Segment')."</strong>
-                    <p>[".str_pad($segmentID, 4, '0', STR_PAD_LEFT)."]&nbsp;$segment</p>
-                    <strong>".t('Teacher')."</strong>
-                    <p>[".str_pad($leraarID, 4, '0', STR_PAD_LEFT)."]&nbsp;$leraar</p>
-                    <strong>".t('Active')."</strong>
-                    <p>$active</p>
-                    <strong>".t('Groups')."</strong>
-                    <p>$groups</p>"
+        "<a href='" . $url->toString() . "'>" . t('Manage Courses') . "</a><h1>$course_name</h1><br><strong>IPF_RD</strong><p>" .
+        $this->axisToList($ipf) . "</p><strong>GPF_RD</strong><p>" .
+        $this->axisToList($gpf) . "</p><strong>" . t('Segment') . "</strong><p>[" .
+        str_pad($segmentID, 4, '0', STR_PAD_LEFT) . "]&nbsp;$segment</p><strong>" . t('Teacher') . "</strong><p>[" .
+        str_pad($leraarID, 4, '0', STR_PAD_LEFT) . "]&nbsp;$leraar</p><strong>" . t('Active') . "</strong><p>$active</p><strong>" . t('Groups') . "</strong><p>$groups</p>",
         ];
     }
 
     /**
-     * @return html list with all PFRD parameters.
+     * Converts a list of axis labels to a table.
+     *
+     * @param $pf string
+     *            the axis labels.
+     *
+     * @return html 
+     *   list with all PFRD parameters.
      */
-    private function AxisToList($pf)
+    private function axisToList($pf)
     {
-        // return "<ul><li>".str_replace('/', '<li>', $pf)."</ul>";
-        // return "<table style='width:320px; margin-bottom:0px;'>".
-        //         "<tr style='padding-top:0px; height:10px'>".
-        //         "<td style='height:20px; padding-top:0px; width:10%'>".str_replace('/', "</td><td style='height:20px; padding:0px; width:10%'>", $pf)."</td>".
-        //         "</tr>".
-        //         "</table>";
-        return "<table>".
-                 "<tr>".
-                 "<td>|</td>".
-                 "<td>".str_replace('/', "</td><td>|</td><td>", $pf)."</td>".
-                 "<td>|</td>".
-                 "</tr>".
-                 "</table>";
+        return "<table><tr><td>|</td><td>" . 
+        str_replace('/', "</td><td>|</td><td>", $pf) . 
+        "</td><td>|</td></tr></table>";
 
-        // return str_replace('/', '&nbsp;|&nbsp;', $pf);
+        // Return str_replace('/', '&nbsp;|&nbsp;', $pf);
     }
 
     /**
-     * @return html list containing all users and their id's of a group.
+     * Fetches the Users of a Group.
+     *
+     * @param connection $conn    
+     *                            The Database Connection.     
+     * @param int        $groupID 
+     *                            The ID of the Group to be retrieved.
+     *
+     * @return string 
+     *   list containing all users and their id's of a group.
      */
-    private function FetchGroupUsers($conn, $groupID)
+    private function fetchGroupUsers($conn, $groupID)
     {
-        //[Groups]
-         $query = $conn
-              ->select('userandgrouprelations', 'r');
+        // [Groups]
+        $query = $conn
+        ->select('userandgrouprelations', 'r');
 
         $query->join('users', 'u', 'r.UserID=u.UserID');
         $query->condition('r.GroupID', $groupID);
@@ -149,30 +163,27 @@ class DisplayCourseController extends ControllerBase
             ->execute()
             ->fetchAllAssoc('UserID', \PDO::FETCH_ASSOC);
 
-         //[Users]
+        // [Users]
         $users = "";
 
         foreach ($data as $record) {
             // Do something with each $record
             $userID = $record['UserID'];
             $user = $record['Username'];
-
             $users .= "<tr>";
-            //str_pad($userID, 4, '0', STR_PAD_LEFT)
-            $users .= "<td>".$userID."</td><td>".$user."</td>";
+            $users .= "<td>" . $userID . "</td><td>" . $user . "</td>";
             $users .= "</tr>";
         }
 
         if (strlen($users) === 0) {
             $users .= "<tr>";
-            $users .= "<td span='2'>".t('No Users')."</td>";
+            $users .= "<td span='2'>" . t('No Users') . "</td>";
             $users .= "<tr>";
 
-            $users = "<table>".$users."</table>";
+            $users = "<table>" . $users . "</table>";
         } else {
-            $users = "<table><tr><th>UserID</th><th>Username</th></tr>".$users."</table>";
+            $users = "<table><tr><th>UserID</th><th>Username</th></tr>" . $users . "</table>";
         }
-
 
         return $users;
     }
