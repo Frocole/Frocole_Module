@@ -18,12 +18,19 @@ use Drupal\Core\Url;
  * @link https://github.com/Frocole/Frocole_Module the Frocole Repository.
  */
 class DeleteCourseForm extends ConfirmFormBase {
+
+  /**
+   * The Segment ID to delete.
+   *
+   * @var int
+   *   the Segment ID to delete.
+   */
   public $id;
 
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Form ID.
    */
   public function getFormId() {
@@ -33,7 +40,7 @@ class DeleteCourseForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Question.
    */
   public function getQuestion() {
@@ -43,7 +50,7 @@ class DeleteCourseForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return Url
+   * @return \Drupal\Core\Url
    *   the Cancel Url.
    */
   public function getCancelUrl() {
@@ -53,7 +60,7 @@ class DeleteCourseForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Description.
    */
   public function getDescription() {
@@ -65,7 +72,7 @@ class DeleteCourseForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Confirm Text.
    */
   public function getConfirmText() {
@@ -75,7 +82,7 @@ class DeleteCourseForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Cancel Text.
    */
   public function getCancelText() {
@@ -89,7 +96,7 @@ class DeleteCourseForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   * @param $id
+   * @param int $id
    *   the ID of the Course to delete.
    *
    * @return Form
@@ -113,9 +120,6 @@ class DeleteCourseForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   *
-   * @return Form
-   *   the Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
@@ -128,9 +132,6 @@ class DeleteCourseForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   *
-   * @return Form
-   *   the Submit Form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $connection = Database::getConnection('default', 'frocole');
@@ -190,7 +191,8 @@ class DeleteCourseForm extends ConfirmFormBase {
       $userID = $relation['UserID'];
 
       // ! Extend this to all known teachers!
-      // ! If not, a course might not show up (if the teacher is deleted by another course deletion).
+      // ! If not, a course might not show up
+      // ! (if the teacher is deleted by another course deletion).
       // !
       if (!in_array($userID, $teacherIDs)) {
         $usersDel += $connection
@@ -221,7 +223,8 @@ class DeleteCourseForm extends ConfirmFormBase {
 
     // Show message and redirect to list page.
     \Drupal::messenger()
-      ->addMessage($this->t('Succesfully deleted a Course with ID %id, deleted %fd Feedback Items, %gd Groups and %ud Users.', ['%id' => $this->id, '%fd' => $feedbackDel, '%gd' => $groupsDel, '%ud' => $usersDel]));
+      ->addMessage($this->t('Succesfully deleted a Course with ID %id, deleted %fd Feedback Items, %gd Groups and %ud Users.',
+      ['%id' => $this->id, '%fd' => $feedbackDel, '%gd' => $groupsDel, '%ud' => $usersDel]));
 
     $form_state->setRedirect('frocole.display_courses');
   }

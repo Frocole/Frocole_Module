@@ -49,7 +49,6 @@ class DisplayInfoTableController extends ControllerBase {
     // Build table.
     $rows = [];
     foreach ($results as $data) {
-      // $url_view    = Url::fromRoute('frocole.view_info_form', ['id' => $data->SegmentID], []);
       $url_delete = Url::fromRoute('frocole.delete_info_form', ['id' => $data->infoid], []);
       $url_edit = Url::fromRoute('frocole.add_info_form', ['sid' => $data->SegmentID], []);
 

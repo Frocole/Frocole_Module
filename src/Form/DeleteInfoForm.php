@@ -18,6 +18,13 @@ use Drupal\Core\Url;
  * @link https://github.com/Frocole/Frocole_Module the Frocole Repository.
  */
 class DeleteInfoForm extends ConfirmFormBase {
+
+  /**
+   * The Segment ID to delete.
+   *
+   * @var int
+   *   the Segment ID to delete.
+   */
   public $id;
 
   /**
@@ -43,7 +50,7 @@ class DeleteInfoForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return Url
+   * @return \Drupal\Core\Url
    *   the Cancel Url.
    */
   public function getCancelUrl() {
@@ -53,7 +60,7 @@ class DeleteInfoForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Description.
    */
   public function getDescription() {
@@ -63,7 +70,7 @@ class DeleteInfoForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Confirm Text.
    */
   public function getConfirmText() {
@@ -73,7 +80,7 @@ class DeleteInfoForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
+   * @return string
    *   the Cancel Text.
    */
   public function getCancelText() {
@@ -87,7 +94,7 @@ class DeleteInfoForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   * @param $id
+   * @param int $id
    *   the ID of the Info Text to remove.
    *
    * @return Form
@@ -111,9 +118,6 @@ class DeleteInfoForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   *
-   * @return Form
-   *   the Validate Form
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
@@ -126,9 +130,6 @@ class DeleteInfoForm extends ConfirmFormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   *
-   * @return Form
-   *   the Submit Form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = Database::getConnection('default', 'frocole');

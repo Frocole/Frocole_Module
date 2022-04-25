@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * A Form for Adding/Editing a Course.
- * 
+ *
  * @category Form
  * @package Drupal\frocole\Controller
  * @author Wim van der Vegt <wim.vandervegt@ou.nl>
@@ -24,8 +24,8 @@ class AddCourseForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
-   *   the form id.
+   * @return string
+   *   The form id.
    */
   public function getFormId() {
     return 'add_course_form';
@@ -35,11 +35,12 @@ class AddCourseForm extends FormBase {
    * {@inheritdoc}
    *
    * @param array $form
-   *   the form.
+   *   The form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   the form stage.
+   *   The form stage.
    *
-   * @return the form definition.
+   * @return Form
+   *   The form definition.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $request = \Drupal::request();
@@ -98,7 +99,7 @@ class AddCourseForm extends FormBase {
     $form['SegmentID'] = [
       '#type' => 'select',
       '#title' => $this->t('Select Segment'),
-      '#options' => $this->_fetchSegments(),
+      '#options' => $this->fetchSegments(),
       '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
       '#default_value' => (isset($data['SegmentID'])) ? $data['SegmentID'] : '',
     ];
@@ -136,8 +137,6 @@ class AddCourseForm extends FormBase {
    *   The Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Form State.
-   *
-   * @return the Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $ip = $form_state->getValue('IPF_RD_parameters');
@@ -252,8 +251,24 @@ class AddCourseForm extends FormBase {
     //
     // Warning: some mismatches between escape methods.
     //
-    // mysqli_real_escape_string(): NUL (ASCII 0), \n, \r, \, ', ", and Control-Z.
-    // Html::escape():              & (ampersand), " (double quote), ' (single quote), < (less than), > (greater than).
+    // mysqli_real_escape_string():
+    //
+    // NUL (ASCII 0),
+    // \n,
+    // \r,
+    // \,
+    // ',
+    // ", and
+    // Control-Z.
+    //
+    // Html::escape():
+    //
+    // & (ampersand),
+    // " (double quote),
+    // ' (single quote),
+    // < (less than),
+    // > (greater than).
+    //
     if ($ip != Html::escape(trim($ip, '/'))) {
       $form_state->setErrorByName(
             'IPF_RD_parameters', $this->t(
@@ -308,11 +323,9 @@ class AddCourseForm extends FormBase {
    * {@inheritdoc}
    *
    * @param array $form
-   *   the Form.
+   *   The Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   the Form State.
-   *
-   * @return the Submit Form.
+   *   The Form State.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $data = [
@@ -358,7 +371,8 @@ class AddCourseForm extends FormBase {
   /**
    * Fetched the Users.
    *
-   * @return an associated array of user's, their names and nicknames.
+   * @return array
+   *   An associated array of user's, their names and nicknames.
    */
   private function fetchUsers() {
     // [Users]
@@ -382,9 +396,10 @@ class AddCourseForm extends FormBase {
   /**
    * Fetches the Segments.
    *
-   * @return an associated array of segments, their names.
+   * @return array
+   *   An associated array of segments, their names.
    */
-  private function _fetchSegments() {
+  private function fetchSegments() {
     // [segments]
     $query = Database::getConnection('default', 'frocole')
       ->select('segments', 's')

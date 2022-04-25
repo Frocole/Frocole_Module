@@ -23,8 +23,8 @@ class AddSegmentForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @return String
-   *   the form id.
+   * @return string
+   *   The form id.
    */
   public function getFormId() {
     return 'add_segment_form';
@@ -34,12 +34,12 @@ class AddSegmentForm extends FormBase {
    * {@inheritdoc}
    *
    * @param array $form
-   *   the form.
+   *   The form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   the Form State.
+   *   The Form State.
    *
    * @return Form
-   *   the form definition.
+   *   The form definition.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $request = \Drupal::request();
@@ -92,9 +92,6 @@ class AddSegmentForm extends FormBase {
    *   The Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Form State.
-   *
-   * @return Form
-   *   the Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $conn = Database::getConnection('default', 'frocole');
@@ -129,9 +126,6 @@ class AddSegmentForm extends FormBase {
    *   the Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   the Form State.
-   *
-   * @return Form
-   *   the Submit Form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $data = [

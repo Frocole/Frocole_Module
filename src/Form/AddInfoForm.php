@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * A Form for Adding/Editing a Info Text.
-
  *
  * @category Form
  * @package Drupal\frocole\Form
@@ -23,23 +22,24 @@ class AddInfoForm extends FormBase {
 
   /**
    * {@inheritdoc}
-   * 
-   * @return String
-   *   the form id.
+   *
+   * @return string
+   *   The form id.
    */
   public function getFormId() {
     return 'add_info_form';
   }
 
- /**
+  /**
    * {@inheritdoc}
    *
    * @param array $form
-   *   the form.
+   *   The form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   the Form State.
+   *   The Form State.
    *
-   * @return the form definition.
+   * @return Form
+   *   The form definition.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $ro = FALSE;
@@ -83,7 +83,6 @@ class AddInfoForm extends FormBase {
     $form['info'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Additionele App Info'),
-        // '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
       '#required' => TRUE,
       '#size' => 60,
       '#default_value' => $text,
@@ -106,8 +105,6 @@ class AddInfoForm extends FormBase {
    *   The Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Form State.
-   *
-   * @return the Validate Form.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $info = $form_state->getValue('info');
@@ -118,8 +115,24 @@ class AddInfoForm extends FormBase {
     //
     // Warning: some mismatches between escape methods.
     //
-    // mysqli_real_escape_string(): NUL (ASCII 0), \n, \r, \, ', ", and Control-Z.
-    // Html::escape():              & (ampersand), " (double quote), ' (single quote), < (less than), > (greater than).
+    // mysqli_real_escape_string():
+    //
+    // NUL (ASCII 0),
+    // \n,
+    // \r,
+    // \,
+    // ',
+    // ", and
+    // Control-Z.
+    //
+    // Html::escape():
+    //
+    // & (ampersand),
+    // " (double quote),
+    // ' (single quote),
+    // < (less than),
+    // > (greater than).
+    //
     if (str_contains($info, "<") && str_contains($info, ">")) {
       $form_state->setErrorByName('info', $this->t('%msg: The input contains &lt; and &gt; characters.', [
         '%msg' => $this->t('Error'),
@@ -128,7 +141,8 @@ class AddInfoForm extends FormBase {
 
     /*
     if ($info != Html::escape(trim($info,'/'))) {
-    $form_state->setErrorByName('info', $this->t('%msg: The input contains illegal characters.', [
+    $form_state->setErrorByName('info',
+    $this->t('%msg: The input contains illegal characters.', [
     '%msg' => $this->t('Error'),
     ]));
     }
@@ -139,11 +153,9 @@ class AddInfoForm extends FormBase {
    * {@inheritdoc}
    *
    * @param array $form
-   *   the Form.
+   *   The Form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   the Form State.
-   *
-   * @return the Submit Form.
+   *   The Form State.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $text = $form_state->getValue('info');
@@ -186,9 +198,9 @@ class AddInfoForm extends FormBase {
 
   /**
    * Fetch the Segments.
-   * 
+   *
    * @return array
-   *   an associated array of segments, their names.
+   *   An associated array of segments, their names.
    */
   private function fetchSegments() {
     // [segments]
@@ -211,11 +223,12 @@ class AddInfoForm extends FormBase {
 
   /**
    * Fetch a Segment Name.
-   * 
-   * @param int $id
-   *   the ID of the Segment.
-   * @return String
-   *   the Segment name.
+   *
+   * @param int $sid
+   *   The ID of the Segment.
+   *
+   * @return string
+   *   The Segment name.
    */
   private function fetchSegmentName($sid) {
     // [segments]
@@ -238,11 +251,12 @@ class AddInfoForm extends FormBase {
 
   /**
    * Fetch the Info Text.
-   * 
-   * @param int $id
-   *   the ID of the Info Text.
-   * @return String
-   *   the Info Text name.
+   *
+   * @param int $sid
+   *   The ID of the Info Text.
+   *
+   * @return string
+   *   The Info Text name.
    */
   private function fetchInfo($sid) {
     // [segments]
@@ -264,12 +278,12 @@ class AddInfoForm extends FormBase {
   }
 
   /**
-   * Insert Info Text
-   * 
-   * @param int $id
-   *   the Info Text ID.
-   * @param String infotext
-   *   the Info Text
+   * Insert Info Text.
+   *
+   * @param int $sid
+   *   The Info Text ID.
+   * @param string $infotext
+   *   The Info Text.
    */
   private function insertInfo($sid, $infotext) {
     $data = [

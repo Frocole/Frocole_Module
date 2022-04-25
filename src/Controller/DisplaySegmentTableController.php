@@ -21,7 +21,8 @@ class DisplaySegmentTableController extends ControllerBase {
   /**
    * Shows a list of Segments.
    *
-   * @return Shows a list of Segments.
+   * @return Form
+   *   Shows a list of Segments.
    */
   public function index() {
     // Create table header.
@@ -46,7 +47,6 @@ class DisplaySegmentTableController extends ControllerBase {
 
     $rows = [];
     foreach ($results as $data) {
-      // $url_view = Url::fromRoute('frocole.show_course', ['id' => $data->SegmentID], []);
       $url_delete = Url::fromRoute('frocole.delete_segment_form', ['id' => $data->SegmentID], []);
       $url_edit   = Url::fromRoute('frocole.add_segment_form', ['id' => $data->SegmentID], []);
       $url_info   = Url::fromRoute('frocole.add_info_form', ['sid' => $data->SegmentID], []);

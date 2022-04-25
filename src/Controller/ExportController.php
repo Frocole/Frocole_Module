@@ -21,10 +21,11 @@ class ExportController extends ControllerBase {
   /**
    * Exports the data of a group.
    *
-   * @param $id
+   * @param int $id
    *   The ID of the Group to Export.
    *
-   * @return The (Group) Data in CSV format.
+   * @return Symfony\Component\HttpFoundation\StreamedResponse
+   *   The (Group) Data in CSV format.
    */
   public function export($id) {
     // To show the csv as content of a page:
@@ -38,7 +39,7 @@ class ExportController extends ControllerBase {
     //
     // Output the stream as a raw html PRE string for display on a page.
     // $build = [
-    //    '#markup' => "<pre>".stream_get_contents($csv)."</pre>",
+    // '#markup' => "<pre>".stream_get_contents($csv)."</pre>",
     // ];
     // fclose($csv);
     //
