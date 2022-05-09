@@ -134,7 +134,7 @@ class DisplayCourseController extends ControllerBase {
   /**
    * Fetches the Users of a Group.
    *
-   * @param connection $conn
+   * @param \Drupal\Core\Database\Connection $conn
    *   The Database Connection.
    * @param int $groupID
    *   The ID of the Group to be retrieved.
@@ -142,7 +142,7 @@ class DisplayCourseController extends ControllerBase {
    * @return string
    *   list containing all users and their id's of a group.
    */
-  private function fetchGroupUsers($conn, $groupID) {
+  private function fetchGroupUsers(Connection $conn, int $groupID) {
     // [Groups]
     $query = $conn
       ->select('userandgrouprelations', 'r');
