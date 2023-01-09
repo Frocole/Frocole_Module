@@ -4,8 +4,11 @@ namespace Drupal\frocole\Controller;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\Exception;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+
+class FrocoleException extends \Exception {}
 
 /**
  * The List of Courses formatted as a Table.
@@ -25,6 +28,14 @@ class DisplayCourseTableController extends ControllerBase {
    *   a List of Courses formatted as a Table.
    */
   public function index() {
+    /* Test Code
+    try {
+      throw new FrocoleException('test message');
+    } catch (FrocoleException $fe) {
+      \Drupal::logger('frocole')->error($fe);
+    }
+    */
+
     // Fails
     // $request = \Drupal::request();
     // if ($route = $request->attributes->
