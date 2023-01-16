@@ -94,6 +94,15 @@ class AddCourseForm extends FormBase {
       '#default_value' => (isset($data['GPF_RD_parameters'])) ? $data['GPF_RD_parameters'] : '',
       '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
     ];
+    $form['PPF_RD_parameters'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Product Performance'),
+      '#description' => $this->t('Enter 3..10 performance indicator labels, separated by a formard slash (/).'),
+      '#required' => TRUE,
+      '#maxlength' => 255,
+      '#default_value' => (isset($data['PPF_RD_parameters'])) ? $data['PPF_RD_parameters'] : '',
+      '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
+    ];
 
     // Find all users and their id's.
     $form['SegmentID'] = [
@@ -141,11 +150,15 @@ class AddCourseForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $ip = $form_state->getValue('IPF_RD_parameters');
     $gp = $form_state->getValue('GPF_RD_parameters');
+    $pp = $form_state->getValue('PPF_RD_parameters');
 
     $conn = Database::getConnection('default', 'frocole');
 
     $ipf = count(explode('/', trim($ip, '/')));
     $gpf = count(explode('/', trim($gp, '/')));
+    $ppf = count(explode('/', trim($pp, '/')));
+
+    /////////////////////////////////
 
     // Check Min/Max Number of indicators.
     if ($ipf < 3) {
@@ -198,8 +211,36 @@ class AddCourseForm extends FormBase {
                   '%no' => 10,
                 ]
             )
-            );
+        );
     }
+
+    // Check Min/Max Number of indicators.
+    if ($ppf < 3) {
+      $form_state->setErrorByName(
+            'PPF_RD_parameters', $this->t(
+                '%msg: The minimum number of %ip performance %in is %no.', [
+                  '%msg' => $this->t('Error'),
+                  '%ip' => $this->t('product'),
+                  '%in' => $this->t('indicators'),
+                  '%no' => 3,
+                ]
+            )
+        );
+    }
+    elseif ($ppf > 10) {
+      $form_state->setErrorByName(
+            'PPF_RD_parameters', $this->t(
+                '%msg: The maximum number of %ip performance %in is %no.', [
+                  '%msg' => $this->t('Error'),
+                  '%ip' => $this->t('product'),
+                  '%in' => $this->t('indicators'),
+                  '%no' => 10,
+                ]
+            )
+        );
+    }
+
+    /////////////////////////////////
 
     // Check leading or trailing separators.
     if ($ip != trim($ip, '/')) {
@@ -222,6 +263,19 @@ class AddCourseForm extends FormBase {
             )
         );
     }
+
+    // Check leading or trailing separators.
+    if ($pp != trim($pp, '/')) {
+      $form_state->setErrorByName(
+            'PPF_RD_parameters', $this->t(
+                '%msg: The input contains to many separators.', [
+                  '%msg' => $this->t('Error'),
+                ]
+            )
+        );
+    }
+
+    /////////////////////////////////
 
     // Check on empty indicators.
     if (in_array("", explode('/', trim($ip, '/')))) {
@@ -246,6 +300,20 @@ class AddCourseForm extends FormBase {
             )
         );
     }
+
+    // Check on empty indicators.
+    if (in_array("", explode('/', trim($pp, '/')))) {
+      $form_state->setErrorByName(
+            'PPF_RD_parameters', $this->t(
+                '%msg: The input contains empty %in.', [
+                  '%msg' => $this->t('Error'),
+                  '%in' => $this->t('indicators'),
+                ]
+            )
+        );
+    }
+
+    /////////////////////////////////
 
     // Check for illegal characters.
     //
@@ -290,6 +358,19 @@ class AddCourseForm extends FormBase {
         );
     }
 
+    // Check for illegal characters.
+    if ($pp != Html::escape(trim($pp, '/'))) {
+      $form_state->setErrorByName(
+            'PPF_RD_parameters', $this->t(
+                '%msg: The input contains illegal characters.', [
+                  '%msg' => $this->t('Error'),
+                ]
+            )
+        );
+    }
+
+    /////////////////////////////////
+
     // Check if Leraar has the same SegmentID as the Course.
     $sid = $form_state->getValue('SegmentID');
     $lid = $form_state->getValue('LeraarUserID');
@@ -332,6 +413,7 @@ class AddCourseForm extends FormBase {
       'CourseName' => $form_state->getValue('CourseName'),
       'IPF_RD_parameters' => $form_state->getValue('IPF_RD_parameters'),
       'GPF_RD_parameters' => $form_state->getValue('GPF_RD_parameters'),
+      'PPF_RD_parameters' => $form_state->getValue('PPF_RD_parameters'),
       'SegmentID' => $form_state->getValue('SegmentID'),
       'LeraarUserID' => $form_state->getValue('LeraarUserID'),
       'CourseActive' => $form_state->getValue('CourseActive'),
