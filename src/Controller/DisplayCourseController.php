@@ -64,7 +64,7 @@ class DisplayCourseController extends ControllerBase {
     $course_name = $data['CourseName'];
     $ipf = $data['IPF_RD_parameters'];
     $gpf = $data['GPF_RD_parameters'];
-    $ppf = $data['PPF_RD_parameters'];
+    $ppf = $data['PF_RD_parameters'];
     $segmentID = $data['SegmentID'];
     $leraarID = $data['LeraarUserID'];
     $active = $data['CourseActive'];
@@ -109,7 +109,7 @@ class DisplayCourseController extends ControllerBase {
       '#markup' =>
       "<a href='" . $url->toString() . "'>" . t('Manage Courses') . "</a><h1>$course_name</h1><br><strong>IPF_RD</strong><p>" .
       $this->axisToList($ipf) . "</p><strong>GPF_RD</strong><p>" .
-      $this->axisToList($gpf) . "</p><strong>PPF_RD</strong><p>" .
+      $this->axisToList($gpf) . "</p><strong>PF_RD</strong><p>" .
       $this->axisToList($ppf) . "</p><strong>" . t('Segment') . "</strong><p>[" .
       str_pad($segmentID, 4, '0', STR_PAD_LEFT) . "]&nbsp;$segment</p><strong>" . t('Teacher') . "</strong><p>[" .
       str_pad($leraarID, 4, '0', STR_PAD_LEFT) . "]&nbsp;$leraar</p><strong>" . t('Active') . "</strong><p>$active</p><strong>" . t('Groups') . "</strong><p>$groups</p>",
