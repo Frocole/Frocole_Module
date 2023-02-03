@@ -72,13 +72,19 @@ class AddInfoForm extends FormBase {
     ];
 
     // Find all segments and their id's.
+    $segid = (isset($data['SegmentID'])
+      ? $data['SegmentID']
+      : (isset($_GET['sid'])
+        ? $_GET['sid']
+        : ''));
+
     $form['SegmentID'] = [
       '#type' => 'select',
       '#title' => $this->t('Select Segment'),
       '#options' => $this->fetchSegments(),
       '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
-      '#disabled' => isset($data['SegmentID']),
-      '#default_value' => (isset($data['SegmentID'])) ? $this->fetchSegmentName($data['SegmentID']) : '',
+      '#disabled' => isset($segid) && $segid!='',
+      '#default_value' => ($segid) ? $this->fetchSegmentName($segid) : '',
     ];
 
     $form['info'] = [
