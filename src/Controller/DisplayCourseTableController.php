@@ -39,9 +39,10 @@ class DisplayCourseTableController extends ControllerBase {
     // Fails
     // $request = \Drupal::request();
     // if ($route = $request->attributes->
-    // get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+    // get(RouteObjectInterface::ROUTE_OBJECT)) {
     // $route->setDefault('_title', t('All Courses'));
     // }
+
     // Create table header.
     $header_table = [
       'CourseID' => t('Course ID'),

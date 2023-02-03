@@ -2,7 +2,7 @@
 
 namespace Drupal\frocole\Form;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\Core\Routing\RouteObjectInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -50,9 +50,12 @@ class AddSegmentForm extends FormBase {
 
     $url = Url::fromRoute('frocole.display_segments');
 
-    $form['add'] = [
+    $form['links'] = [
       '#type' => 'item',
-      '#markup' => '<a href="' . $url->toString() . '">' . t('Manage Segments') . '</a>',
+      '#markup' =>
+            '<a href="' . Url::fromRoute('frocole.display_courses')->toString() . '">' . t('Manage Courses') . '</a> | ' .
+            '<a href="' . $url->toString() . '">' . t('Manage Segments') . '</a> | ' .
+            '<a href="' . Url::fromRoute('frocole.display_infos')->toString() . '">' . t('Manage Additional Info') . '</a>',
     ];
 
     $conn = Database::getConnection('default', 'frocole');
