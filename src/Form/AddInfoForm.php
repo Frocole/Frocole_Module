@@ -2,7 +2,7 @@
 
 namespace Drupal\frocole\Form;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\Core\Routing\RouteObjectInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -44,9 +44,10 @@ class AddInfoForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $ro = FALSE;
 
-    $sid = $_GET['sid'];
-
-    $data = $this->fetchInfo($sid);
+    $data = [];
+    if (isset($_GET['sid'])) {
+        $data = $this->fetchInfo($_GET['sid']);
+    }
 
     $request = \Drupal::request();
     if ($route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT)) {
@@ -60,24 +61,30 @@ class AddInfoForm extends FormBase {
     $text = str_replace("\\r", "\r", $text);
     $text = str_replace("\\n", "\n", $text);
 
-    $url = Url::fromRoute('frocole.display_segments');
+    $url = Url::fromRoute('frocole.display_infos');
 
     $form['links'] = [
       '#type' => 'item',
       '#markup' =>
       '<a href="' . Url::fromRoute('frocole.display_courses')->toString() . '">' . t('Manage Courses') . '</a> | ' .
-      '<a href="' . $url->toString() . '">' . t('Manage Segments') . '</a> | ' .
-      '<a href="' . Url::fromRoute('frocole.display_infos')->toString() . '">' . t('Manage Additional Info') . '</a>',
+      '<a href="' . Url::fromRoute('frocole.display_segments')->toString() . '">' . t('Manage Segments') . '</a> | ' .
+      '<a href="' . $url->toString() . '">' . t('Manage Additional Info') . '</a> | ' ,
     ];
 
     // Find all segments and their id's.
+    $segid = (isset($data['SegmentID'])
+      ? $data['SegmentID']
+      : (isset($_GET['sid'])
+        ? $_GET['sid']
+        : ''));
+
     $form['SegmentID'] = [
       '#type' => 'select',
       '#title' => $this->t('Select Segment'),
       '#options' => $this->fetchSegments(),
       '#wrapper_attributes' => ['class' => 'col-md-6 col-xs-12'],
-      '#disabled' => isset($sid),
-      '#default_value' => (isset($sid)) ? $this->fetchSegmentName($sid) : '',
+      '#disabled' => isset($segid) && $segid!='',
+      '#default_value' => ($segid) ? $this->fetchSegmentName($segid) : '',
     ];
 
     $form['info'] = [
@@ -161,14 +168,19 @@ class AddInfoForm extends FormBase {
     $text = $form_state->getValue('info');
     // $text = str_replace("\r", "\\r", $text);
     // $text = str_replace("\n", "\\n", $text);
+
+    $segid = is_array($form_state->getValue('SegmentID'))
+      ? $form_state->getValue('SegmentID')['SegmentID']
+      : $form_state->getValue('SegmentID');
+
     $data = [
           // 'infoid' => $form_state->getValue('SegmentID'),
       'infotext' => $text,
-      'SegmentID' => $form_state->getValue('SegmentID')['SegmentID'],
+      'SegmentID' => $segid,
     ];
 
     // Fetch existing record (if any) to see if we need to insert or update.
-    $orgdata = $this->fetchInfo($form_state->getValue('SegmentID')['SegmentID']);
+    $orgdata = $this->fetchInfo($segid);
 
     // See https://api.drupal.org/api/drupal/elements/8.2.x
     if (isset($orgdata)) {
@@ -179,7 +191,7 @@ class AddInfoForm extends FormBase {
         ->condition('infoid', $orgdata['infoid'])
         ->execute();
       \Drupal::messenger()
-        ->addMessage($this->t('Succesfully edited an Additional Info with ID %infoid.', ['%infoid' => $data['infoid']]));
+        ->addMessage($this->t('Succesfully edited an Additional Info with ID %infoid.', ['%infoid' => $orgdata['infoid']]));
     }
     else {
       // Insert data to database.
@@ -191,7 +203,7 @@ class AddInfoForm extends FormBase {
         ->addMessage($this->t('Succesfully added a new Additional Info.', []));
     }
 
-    $url = new Url('frocole.display_segments');
+    $url = new Url('frocole.display_infos');
     $response = new RedirectResponse($url->toString());
     $response->send();
   }
@@ -297,5 +309,4 @@ class AddInfoForm extends FormBase {
       ->fields($data)
       ->execute();
   }
-
 }
